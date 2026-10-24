@@ -1,3 +1,5 @@
+> Source facts and crawl evidence remain current for this work. The visual direction and image/font choices described in this historical audit are superseded by [creative-direction.md](creative-direction.md) and [assets.md](assets.md).
+
 # Live website audit and redesign comparison
 
 This audit supersedes the cached-only findings in the first iteration. Live HTTP access succeeded on retry. Audited 23 October 2026 (Toronto client date).

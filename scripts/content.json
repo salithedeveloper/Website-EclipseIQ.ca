@@ -1,0 +1,195 @@
+{
+  "pages": {
+    "home": [
+      "",
+      "Insurance technology consulting & software",
+      "EclipseIQ Technologies Inc. helps insurers, MGAs, reinsurers and brokers modernize technology and operations through consulting, fractional leadership and software."
+    ],
+    "services": [
+      "services/",
+      "Insurance technology services",
+      "Strategic consulting, transformation, fractional CIO / COO / CTO leadership, EclipseSME, coaching, assessment, audit readiness and security review."
+    ],
+    "about": [
+      "about/",
+      "About EclipseIQ & insurance expertise",
+      "Canadian insurance technology expertise spanning executive leadership, insurance operations, architecture, modernization, data, analytics and reinsurance."
+    ],
+    "faq": [
+      "faq/",
+      "Frequently asked questions",
+      "Explore EclipseIQ services, implementation, pricing, data migration, fractional leadership, Eclipse Totality Assessment and EclipseSME."
+    ],
+    "contact": [
+      "contact/",
+      "Contact EclipseIQ",
+      "Discuss insurance technology consulting, fractional leadership, modernization or an EclipseSME demonstration with EclipseIQ Technologies Inc."
+    ],
+    "privacy": [
+      "privacy-policy/",
+      "Cookies & privacy",
+      "How EclipseIQ handles website inquiries, optional analytics, browser storage and privacy choices."
+    ],
+    "404": [
+      "404.html",
+      "Page not found",
+      "Return to EclipseIQ Technologies Inc. or explore our insurance technology services."
+    ]
+  },
+  "offerings": [
+    [
+      "software",
+      "Insurance software as a service",
+      "Your insurance operations. Connected.",
+      "EclipseSME™ is our policy administration platform for specialty insurers, MGAs and program administrators. We help align its configuration and implementation with your products and operational requirements.",
+      [
+        "Underwriting, quoting and policy administration",
+        "Renewals, endorsements and document generation",
+        "Configurable workflows, reporting and integration"
+      ],
+      "platform"
+    ],
+    [
+      "consulting",
+      "Strategic consulting",
+      "Insurance knowledge at the decision table.",
+      "Make technology and operational decisions with a clear view of your business. We connect insurance experience with practical advice, from understanding current challenges to shaping the path forward.",
+      [
+        "Technology strategy and investment priorities",
+        "Operational improvement and vendor selection",
+        "Business-aligned modernization roadmaps"
+      ],
+      "compass"
+    ],
+    [
+      "transformation",
+      "Digital transformation & integration",
+      "Modernize the systems. Improve the way work flows.",
+      "Connect solution architecture, system modernization and operational change. Improve underwriting, policy management and claims workflows while addressing the realities of legacy systems and data.",
+      [
+        "Solution architecture and third-party implementation",
+        "Custom software and systems integration",
+        "Data conversion, migration and analytics"
+      ],
+      "connect"
+    ],
+    [
+      "coaching",
+      "Team development & coaching",
+      "Support the people who make change happen.",
+      "Technology improvement depends on teams as well as systems. We support leadership development, team efficiency and operational performance within insurance organizations.",
+      [
+        "Leadership and team development",
+        "Coaching for insurance professionals",
+        "Operational collaboration and ways of working"
+      ],
+      "people"
+    ],
+    [
+      "leadership",
+      "Fractional CIO / COO / CTO leadership",
+      "Executive perspective. Flexible engagement.",
+      "Bring experienced insurance and technology leadership into periods of transition, transformation or complex delivery. Scope the engagement around your organization’s needs without a full-time executive appointment.",
+      [
+        "CIO: technology strategy and governance",
+        "COO: operations and business alignment",
+        "CTO: architecture and technology delivery"
+      ],
+      "leadership"
+    ],
+    [
+      "assessment",
+      "Eclipse Totality Assessment™",
+      "A complete view before the next big decision.",
+      "Known on the original homepage as the Totality Check, this assessment reviews your business and technology environment together. Identify risks, inefficiencies and opportunities, then establish a prioritized roadmap.",
+      [
+        "Systems, processes, data and integrations",
+        "Governance and operational workflows",
+        "A practical, prioritized improvement roadmap"
+      ],
+      "assessment"
+    ],
+    [
+      "audit",
+      "Audit readiness",
+      "Bring clarity to processes and documentation.",
+      "Prepare for internal and regulatory audits by reviewing the compliance, documentation and operational processes relevant to your insurance business. Identify areas that need attention before the review.",
+      [
+        "Process and documentation review",
+        "Governance and operational readiness",
+        "Recommendations for identified gaps"
+      ],
+      "check"
+    ],
+    [
+      "security",
+      "Security review",
+      "Understand risk across your insurance systems.",
+      "Review your systems to identify vulnerabilities and opportunities to strengthen cybersecurity and protect sensitive information. Connect recommendations to your organization’s technology and operational priorities.",
+      [
+        "Insurance systems security evaluation",
+        "Vulnerability and risk identification",
+        "Practical recommendations for improvement"
+      ],
+      "shield"
+    ]
+  ],
+  "faq": [
+    [
+      "What products and services do you offer?",
+      "We provide insurance technology consulting, systems modernization, solution architecture, digital transformation, fractional CIO / COO / CTO leadership, assessments, coaching, audit readiness and security reviews. EclipseSME™ is our insurance platform for specialty organizations."
+    ],
+    [
+      "Which insurance organizations do you work with?",
+      "We work with insurers, MGAs, reinsurers, brokers, program administrators and other specialty insurance organizations, from emerging businesses to established enterprises."
+    ],
+    [
+      "Can I arrange an EclipseSME demonstration?",
+      "Yes. Use the contact form to request an EclipseSME demonstration. We can discuss your requirements and focus the conversation on the features and workflows relevant to your organization."
+    ],
+    [
+      "What is your pricing model?",
+      "Pricing is tailored to your requirements. Consulting and implementation proposals set out the scope, deliverables, timeline and pricing before work begins."
+    ],
+    [
+      "Do you work outside Canada?",
+      "Yes. EclipseIQ is based in Canada and works with insurance organizations in Canada and internationally."
+    ],
+    [
+      "What is EclipseSME™, and how can it help?",
+      "EclipseSME is a cloud-based insurance platform developed by EclipseIQ for specialty insurers, MGAs and program administrators. It supports underwriting, quoting, policy administration, renewals, endorsements, document generation and operational workflows."
+    ],
+    [
+      "How long does an EclipseSME implementation take?",
+      "Timelines depend on product complexity, data migration and integration requirements. The current website describes many implementations as taking 6–12 weeks, with more complex projects requiring longer. An assessment establishes a plan for your project; this is an indicative range, not a delivery guarantee."
+    ],
+    [
+      "Do you offer customized solutions?",
+      "Yes. EclipseSME supports configurable products, workflows, forms, business rules, reporting and integrations. We also provide custom development and consulting for specialized requirements."
+    ],
+    [
+      "Do you implement other insurance technology platforms?",
+      "Yes. Alongside EclipseSME, we provide implementation, integration and advisory services for third-party insurance platforms. The business requirement shapes the solution."
+    ],
+    [
+      "Can you assist with data conversion and migration?",
+      "Yes. We help assess, cleanse, map, transform, validate and migrate data during implementations, upgrades and modernization. This includes EclipseSME, other platforms and system consolidation."
+    ],
+    [
+      "How do you approach digital transformation?",
+      "We start with your objectives, operational challenges and technology landscape. Together, we develop a practical roadmap that may involve process improvement, modernization, automation, data and analytics, cloud technology and organizational change."
+    ],
+    [
+      "What is the Eclipse Totality Assessment™?",
+      "It is a comprehensive review of your technology landscape, business processes, data, integrations, governance and operational workflows. It identifies risks and improvement opportunities and concludes with a prioritized roadmap. The original homepage also calls it the Totality Check."
+    ],
+    [
+      "Do you provide fractional technology leadership?",
+      "Yes. Fractional CIO / COO / CTO leadership can support technology strategy, operational alignment, transformation oversight, vendor selection and investment decisions. Scope is tailored to the organization and its priorities."
+    ],
+    [
+      "Can you modernize legacy insurance systems?",
+      "Yes. We assess and improve legacy systems through strategic planning, enhancements, integrations, data migration and transformation initiatives, balancing business priorities with practical implementation."
+    ]
+  ]
+}
