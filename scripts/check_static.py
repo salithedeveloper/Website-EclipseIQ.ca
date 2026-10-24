@@ -2,7 +2,7 @@
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlparse, unquote
-import re, xml.etree.ElementTree as ET
+import re, hashlib, xml.etree.ElementTree as ET
 ROOT=Path(__file__).resolve().parents[1]
 class Page(HTMLParser):
  def __init__(self):
@@ -31,9 +31,18 @@ for f,p in pages.items():
   if target.is_dir():target=target/'index.html'
   assert target.exists(),f'Broken reference {f}: {ref}'
   if u.fragment and target in pages:assert u.fragment in pages[target].ids,f'Broken fragment: {ref}'
-assert len(pages)==7
+assert len(pages)==10
+assert hashlib.sha256((ROOT/'assets/eclipseiq-logo-original.png').read_bytes()).hexdigest()=='e9edbbf8165884a95bdbf18d2a7007b911fbaf35306d39c65a42bb1036b4b9fd', 'Original logo bytes changed'
+for f in pages:
+ text=f.read_text()
+ assert 'Temporary logo placeholder' not in text, f'Placeholder branding: {f}'
+ assert 'assets/eclipseiq-logo-original.png' in text, f'Missing original logo: {f}'
+for name in ['privacy','cookie-policy-ca','cookie-policy-ca-2']:
+ text=(ROOT/name/'index.html').read_text()
+ assert 'https://eclipseiq.ca/privacy-policy/' in text and 'name="robots" content="noindex"' in text
+
 ET.parse(ROOT/'sitemap.xml')
 for f in (ROOT/'assets').glob('*.js'):
  text=f.read_text()
  assert not re.search(r'G-6N90S2Y3DE|13041110|82fea225|eclipsesme\.analytics-consent',text),f'Reference identifiers: {f}'
-print('PASS: 7 pages; local links, fragments, IDs, metadata, external link security, sitemap, identifier isolation')
+print('PASS: 10 pages; local links, fragments, IDs, metadata, external link security, sitemap, identifier isolation, original logo integrity and legacy privacy URLs')

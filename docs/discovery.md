@@ -1,3 +1,5 @@
+> Historical first-iteration discovery only. Superseded by [live-audit-and-gap-analysis.md](live-audit-and-gap-analysis.md), which verifies the live website, actual logo, colours, fonts and complete published page inventory. The temporary branding described below has been removed.
+
 # Content and brand discovery — 23 October 2026
 
 ## Sources and access

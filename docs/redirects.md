@@ -1,23 +1,30 @@
-# URL continuity
+# Verified URL continuity
 
-Known source pages from the recovered public navigation:
+Live sitemap and WordPress public pages API expose six published URLs, all audited successfully.
 
-| Existing URL | Redesign | Action |
+| Existing URL | Static result | Launch action |
 | --- | --- | --- |
 | `/` | `/index.html` served at `/` | Preserve |
-| `/contact/` | `/contact/index.html` | Preserve directory index |
-| `/faq/` | `/faq/index.html` | Preserve directory index |
-| Homepage offerings/about/product sections | `/#capabilities`, `/about/`, `/#eclipsesme` | New explicit destinations |
+| `/contact/` | `/contact/index.html` | Preserve |
+| `/faq/` | `/faq/index.html` | Preserve |
+| `/privacy-policy/` | `/privacy-policy/index.html` | Preserve with updated website privacy/cookie notice |
+| `/cookie-policy-ca/` | Working compatibility index, canonical privacy-policy | Prefer a specific 301 to `/privacy-policy/#cookies` when hosting is configured |
+| `/cookie-policy-ca-2/` | Working compatibility index, canonical privacy-policy | Prefer a specific 301 to `/privacy-policy/#cookies` when hosting is configured |
+| `/#offerings-section` | Same anchor retained on homepage | Preserve; `#capabilities` also works from the first redesign |
 
-New pages: `/services/`, `/about/`, `/privacy/`. The old footer's Privacy Policy was plain text in extracted content, so no verified historical privacy URL is known. Do not fabricate an old URL or create broad redirects. All internal links include explicit index filenames for File Explorer support; canonicals and sitemap use conventional directory URLs.
+`/about/` and `/services/` return 404 on the original WordPress site: these are new information-architecture pages, not discovered legacy URLs. `/privacy/` was introduced by the first redesign; it remains a functional compatibility page with canonical `/privacy-policy/`. Duplicate compatibility pages use noindex and are omitted from the sitemap; no JavaScript redirect interferes with direct file browsing.
 
-Before WordPress replacement export all published URLs and consult Search Console/Hostinger logs. Add specific 301 redirects for real legacy URLs and old anchor destinations once known. A server cannot redirect fragments; retain any important old anchor IDs after obtaining an export. Preserve uploaded assets that have inbound links where required. Keep `/wp-admin/` and other WordPress paths out of the static deployment; do not indiscriminately redirect them to the homepage.
+`https://www.eclipseiq.ca/` currently redirects to the apex domain. Preserve that host preference and HTTPS during any future hosting change. Canonicals use the apex. All internal file paths include `index.html` so File Explorer browsing works; directory URL canonicals remain appropriate for conventional hosting.
 
-For Apache/Hostinger, configure directory indexes and the 404 document only after review:
+Before replacing WordPress, confirm any older/non-published URLs in Search Console and server logs. The current published sitemap/API inventory is verified, but it cannot prove the absence of historical deleted URLs or external backlinks. Preserve uploaded asset paths if inbound links require them. No blanket redirect to homepage.
+
+Optional Apache/Hostinger configuration after separate launch approval:
 
 ```
 DirectoryIndex index.html
 ErrorDocument 404 /404.html
+Redirect 301 /cookie-policy-ca/ https://eclipseiq.ca/privacy-policy/#cookies
+Redirect 301 /cookie-policy-ca-2/ https://eclipseiq.ca/privacy-policy/#cookies
 ```
 
-These lines are documentation, not a deployed `.htaccess`. No server behavior has been changed.
+These are review examples only. Verify syntax/order with the hosting setup before use; no `.htaccess` or live server settings have been modified.

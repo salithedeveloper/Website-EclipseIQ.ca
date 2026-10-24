@@ -1,28 +1,44 @@
 # EclipseIQ corporate website
 
-Static HTML, CSS and JavaScript. No runtime dependencies, frameworks, cookies from third-party assets, or build step required to view the delivered pages.
+A static corporate website grounded in a fresh live audit of EclipseIQ.ca. HTML, CSS and classic JavaScript; no runtime framework or package installation required.
 
 ## Review locally
-Open `index.html` from File Explorer. All navigation uses relative paths with explicit `index.html` filenames, so nested pages work from `file:` and static web hosting. JavaScript uses classic deferred scripts, not modules or fetch-based page loading. Local form submissions are clearly labelled simulations and do not reach Formspree. Your browser may limit preference persistence for file origins.
+Extract the review archive and open `index.html` from File Explorer. Internal links use explicit relative `index.html` paths. Fonts, original logo and supporting image are self-hosted. Local contact submissions are clearly marked simulations and never reach Formspree. Browser storage persistence on file origins can vary.
 
-Alternatively, from this directory:
+Or run from this directory:
 
 ```
 python -m http.server 4173
 ```
 
-Visit http://localhost:4173. No deployment is needed.
+Then visit http://localhost:4173.
+
+## What is included
+- Original corporate logo, unchanged from the live WordPress asset; verified blue/turquoise palette and IBM Plex typography.
+- Homepage, eight-offering services page, company/expertise page, all 14 FAQ topics, contact and privacy notice.
+- Compatibility pages for `/privacy/`, `/cookie-policy-ca/` and `/cookie-policy-ca-2/`, plus a 404 document.
+- Self-hosted fonts and existing-site editorial image; no external fonts or image services at runtime.
+- AJAX contact flow with safe local simulation, production fail-closed configuration and optional reCAPTCHA v2.
+- Stored accept/reject preferences, footer preference control, consent-gated GA4 preparation and withdrawal.
+- Canonical/social metadata, actual-logo organization schema, sharing card, sitemap and robots.txt.
 
 ## Maintain
-- Edit shared templates and page copy in `scripts/build.py`, then run `python scripts/build.py`. Generated HTML is checked in for direct browsing.
-- Edit `assets/styles.css` and the classic scripts directly.
-- Public configuration lives in `assets/config.js`. No secret keys belong in this repository.
-- `python scripts/check_static.py` validates local paths, anchors, metadata and identifier isolation.
-- `node --check assets/site.js` and `node --check assets/consent.js` check JS syntax.
-- Optional browser checks: `python scripts/check_browser.py` (Playwright plus installed Chromium; no actual network submissions).
-- `assets/social.png` is an original text-only sharing card, not a logo. `scripts/social.py` can regenerate it with Pillow; Pillow is not required to view the site.
+Shared templates, offerings and copy: `scripts/build.py`. Run `python scripts/build.py` after editing; generated HTML is checked in and directly browsable. Styles and classic scripts live in `assets/`. Public form and analytics configuration lives in `assets/config.js`; never add private credentials.
 
-## Review before launch
-The corporate logo is intentionally a labelled temporary placeholder. Blue/turquoise is preserved as the brand family; exact colour values still need confirmation. Original logo replacement, Formspree configuration and privacy practice review are required before publication. GA4 can remain disabled.
+Checks:
 
-See `docs/discovery.md`, `docs/configuration.md`, `docs/launch.md`, `docs/redirects.md` and `docs/validation.md` for evidence, configuration, limitations and launch steps. The existing WordPress site and EclipseSME repository have not been modified. This branch is for review only; nothing is deployed.
+```
+python scripts/check_static.py
+node --check assets/config.js
+node --check assets/site.js
+node --check assets/consent.js
+```
+
+Browser checks need Playwright and Chromium: start the local server, then run `python scripts/check_browser.py`. Providers are mocked, so no real inquiries or analytics events are sent. Optional share-card regeneration uses `python scripts/social.py`, also with Playwright/Chromium; it composes the unmodified actual logo and local fonts. These tools are not needed to view or host the site.
+
+## Evidence and launch
+Start with `docs/live-audit-and-gap-analysis.md` for the live crawl, exact brand values, content inventory and comparison with the first redesign. `docs/live-crawl-evidence.json` records request results and source-file hashes; `docs/assets.md` records asset provenance.
+
+See `docs/configuration.md`, `docs/redirects.md`, `docs/validation.md` and `docs/launch.md`. EclipseIQ's own Formspree endpoint, optional public CAPTCHA key and optional GA4 ID remain unconfigured. The original corporate logo is now included; no temporary branding remains.
+
+This feature branch is for local review. Nothing is deployed, WordPress remains untouched and the EclipseSME repository is unchanged.

@@ -1,34 +1,43 @@
-# Validation — 23 October 2026
+# Revision validation
 
-## Completed
-- Generated all 7 static HTML pages; source and generated output checked in. No build is required to view them.
-- `python scripts/check_static.py`: passed. Seven pages, one h1 each, language/title/description/canonical, unique IDs, local page/assets/fragment targets, external-link noopener, XML sitemap, and isolation from EclipseSME analytics identifiers.
-- `node --check` on config.js, site.js and consent.js: passed. Python scripts compile.
-- `python scripts/check_browser.py`: **187 assertions passed** with installed Chromium and Playwright over the local static server and fully intercepted production/provider scenarios. No actual inquiry or analytics request was sent.
-- Every page checked at widths 1440, 1024, 768, 390 and 320px: no horizontal overflow, pages load, desktop menu hidden, mobile menu and Escape behavior work. FAQ disclosure works. No page JavaScript exceptions observed.
-- Local form simulation: explicit success/error wording, no provider requests, trimming and preserved test values. Production-like tests: required field validation, conditional phone, empty/invalid configuration, missing required CAPTCHA, failed CAPTCHA load, confirmed provider success, ambiguous success, malformed JSON, HTTP 429, network failure, retained entries and retry cooldown. Only provider-confirmed success resets and locks the form.
-- Consent: no external requests before consent, empty GA ID stays inactive even after acceptance, rejection persistence, footer keyboard focus, configured provider loads once only after acceptance, canonical-only page-view data, withdrawal/reload, accessible first-party cookie removal, expired/future/invalid choices, blocked storage and cross-tab revocation. Provider scripts are stubs; these are integration-contract tests, not live Google verification.
-- Desktop and mobile full-page screenshots inspected. Corrected desktop menu toggle visibility and replaced unsupported arrow glyphs with inline SVG icons. Screenshots and test logs are local review artifacts excluded from Git.
-- No third-party font/image dependency. Runtime assets total roughly 84KB (including PNG share card); generated pages are small standalone documents. No performance score is claimed.
+The redesigned iteration is now grounded in a successful live crawl. See `live-audit-and-gap-analysis.md` and `live-crawl-evidence.json` for source evidence and the comparison with the first design.
 
-## Accessibility approach
-Semantic header/nav/main/footer, skip link, one h1, explicit input labels and required indicators, native form constraints, visible focus styles, live status region and focused feedback, keyboard-operable navigation and FAQ, native details, reduced-motion handling, responsive reflow and no scroll-gated content. Consent is non-modal and does not trap focus. Core palette text contrasts are checked separately below. No screen-reader certification, automated WCAG conformance score or full assistive-device audit claimed.
+## Completed checks
 
-## Limits / required follow-up
-- The managed Chromium administrator policy blocks navigation to `file:` URLs. The architecture deliberately uses explicit relative index.html paths, classic local scripts, no modules, no AJAX content fetching and no external assets. All path targets pass static checks. Direct File Explorer opening still needs reviewer confirmation in their own browser; no browser policy was bypassed.
-- Live website access/logo retrieval was incomplete; see discovery.md. Corporate logo remains a clearly labelled placeholder and exact brand values need confirmation. Source public navigation was audited through cached pages, not a complete live crawl.
-- No live Formspree endpoint, CAPTCHA key or GA4 ID supplied. Real delivery, real provider account settings and live analytics remain unverified. IDs are intentionally blank.
-- No Hostinger headers, redirect configuration, custom domain, 404 HTTP status, real device testing, Safari/Firefox testing or production deployment performed. Server headers and remote privacy settings must be reviewed at launch.
+- `python scripts/build.py`: generated ten standalone HTML pages, sitemap and robots.txt. Generated files are committed for direct browsing without a build.
+- `python scripts/check_static.py`: passed. All local page/asset targets, anchors, unique IDs, one h1 per page, metadata, external-link security, sitemap XML, EclipseSME identifier isolation, legacy privacy URL compatibility and original-logo byte integrity.
+- JavaScript syntax checks passed for config.js, site.js and consent.js. Python scripts compile.
+- `python scripts/check_browser.py`: **249 assertions passed** with installed Chromium/Playwright. All provider requests were intercepted or stubbed; no real inquiries or analytics events were sent.
+- Ten pages at widths 1440, 1024, 768, 390 and 320px: successful loads, no horizontal overflow, correct desktop/mobile navigation and Escape behavior. FAQ disclosure works; no page JS errors observed.
+- Original 202×88 logo loads at its native aspect ratio. Existing 800×534 image loads; all form controls have browser-recognized labels.
+- Local explicit success/error simulation, trimming and preserved data. Public development mode and missing/invalid production configuration fail closed. Required field/phone/SMS validation, multiple contact preferences, no-preference rejection, honeypot rejection, CAPTCHA load failure, confirmed success, ambiguous response, malformed JSON, 429, network failure, data preservation, received-state lock and retry cooldown passed.
+- Consent tests passed: zero pre-consent requests, blank ID remains inactive, rejection persists, footer focus handling, mocked provider loads once only on acceptance, canonical-only page-view parameters, withdrawal and cookie removal, invalid/expired/future state, cross-tab revocation, blocked browser storage.
+- Desktop/mobile full-page screenshots of homepage, services and contact inspected. Corrected photo/grid intrinsic sizing and service-card overflow on narrow phones. Updated foreground colours on vivid-blue diagram layers and the contact band for readability. Screenshots and logs remain local review artifacts, not public site assets.
+
+## Accessibility and performance approach
+
+Semantic landmarks, skip link, one h1, descriptive original-logo alt text, explicit/wrapping form labels, required indicators, browser validation, accessible live status feedback, keyboard navigation and native FAQ details. Visible focus, reduced-motion support, layout reflow and no interaction-gated content. Consent is non-modal and never traps keyboard focus.
+
+Brand accents preserve exact source values. Primary text on white/pale surfaces uses darker blues; white CTA body text is on a deep blue background rather than the vivid turquoise accent. Core text contrast checks are recorded below. Logo typography is preserved as an original brand asset, not recoloured for contrast. No full WCAG certification or screen-reader/device audit is claimed.
+
+Local fonts, classic deferred JS, CSS illustration, native lazy-loaded supporting image, and no framework or runtime font/image service. The original supporting PNG is approximately 549KB and is loaded below the fold; the header logo is under 8KB. No Lighthouse score is claimed.
+
+## Remaining limits
+
+- Managed Chromium blocks `file:` navigation. Relative explicit index paths, local classic scripts, self-hosted assets, and no module/fetch-based page loading support File Explorer browsing; static path checks pass. Reviewer should confirm direct opening in their own browser. No browser security policy was bypassed.
+- Real Formspree delivery, CAPTCHA account configuration and GA4 property behavior cannot be verified without the owner's separate identifiers. All remain intentionally blank and production delivery stays unavailable by default.
+- Privacy copy needs confirmation against current business practices, retention and request handling. The published WordPress privacy/cookie pages were audited, but stale WordPress/plugin/shopping descriptions are not reproduced as current behavior.
+- No Hostinger settings, live redirects, response headers, production 404 status, Safari/Firefox or real-device tests, deployment, WordPress mutation or EclipseSME repository mutation performed.
 
 ## Core text contrast calculations
 
-- ink on paper: 12.43:1
-- muted on paper: 5.64:1
-- blue on paper: 5.58:1
-- muted on tint: 5.32:1
-- blue on tint: 5.26:1
-- paper on navy: 13.08:1
-- hero secondary on navy: 9.22:1
-- turquoise title on navy: 8.99:1
+- `#112e3c` on `#ffffff`: 14.19:1
+- `#506572` on `#ffffff`: 6.09:1
+- `#506572` on `#f0f6f8`: 5.58:1
+- `#07688b` on `#f0f6f8`: 5.72:1
+- `#002539` on `#13a8ff`: 6.10:1
+- `#002539` on `#219ebc`: 5.05:1
+- `#ffffff` on `#023047`: 13.85:1
+- `#edfaff` on `#07516b`: 8.22:1
 
-These checks cover the named core pairs, not every rendered element or gradient.
+These calculations cover named solid-colour text pairs, not an exhaustive rendered-state audit.

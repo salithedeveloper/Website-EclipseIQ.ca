@@ -36,7 +36,7 @@ def configure(ctx, mode='production', endpoint='https://formspree.io/f/TESTONLY'
    if not path.is_relative_to(ROOT):route.abort();return
    if path.is_dir():path/= 'index.html'
    if path.exists():
-    mime={'.html':'text/html','.css':'text/css','.js':'text/javascript','.png':'image/png','.svg':'image/svg+xml'}.get(path.suffix,'text/plain')
+    mime={'.html':'text/html','.css':'text/css','.js':'text/javascript','.png':'image/png','.svg':'image/svg+xml','.woff2':'font/woff2'}.get(path.suffix,'text/plain')
     route.fulfill(content_type=mime,body=path.read_bytes());return
    route.fulfill(status=404,body='not found');return
   requests.append(route.request)
@@ -57,7 +57,7 @@ with sync_playwright() as p:
  browser=p.chromium.launch(executable_path=CHROME,headless=True,args=['--no-sandbox'])
  # Real static server: links, rendering and runtime errors at all sizes.
  ctx=browser.new_context();page=ctx.new_page();errs=[];page.on('pageerror',lambda e:errs.append(str(e)))
- paths=['/','/services/index.html','/about/index.html','/faq/index.html','/contact/index.html','/privacy/index.html','/404.html']
+ paths=['/','/services/index.html','/about/index.html','/faq/index.html','/contact/index.html','/privacy-policy/index.html','/404.html','/privacy/index.html','/cookie-policy-ca/index.html','/cookie-policy-ca-2/index.html']
  for width in [1440,1024,768,390,320]:
   page.set_viewport_size({'width':width,'height':900})
   for path in paths:
@@ -73,6 +73,12 @@ with sync_playwright() as p:
   page.goto(BASE+'/')
   page.locator('[data-cookie-choice="rejected"]').click() if page.locator('#cookie-banner').is_visible() else None
   if width in [1440,390]:page.screenshot(path=str(RESULTS/f'home-{width}.png'),full_page=True)
+ page.goto(BASE+'/');page.locator('.company-image img').scroll_into_view_if_needed();page.wait_for_function("document.querySelector('.company-image img').complete && document.querySelector('.company-image img').naturalWidth === 800")
+ ok(True,'original editorial image loads at its expected native width')
+ logo=page.locator('.header .brand img')
+ ok(logo.evaluate('(e)=>e.naturalWidth===202 && e.naturalHeight===88'),'actual corporate logo loads with original proportions')
+ page.goto(BASE+'/contact/index.html')
+ ok(page.locator('input:not([type=hidden]),select,textarea').evaluate_all("els=>els.every(e=>e.labels && e.labels.length > 0)"),'every form field has a programmatic label')
  ok(not errs,'no page JavaScript errors')
  page.goto(BASE+'/faq/index.html');page.locator('summary').first.click();ok(page.locator('details').first.get_attribute('open') is not None,'FAQ expands')
  page.goto(BASE+'/contact/index.html');fill(page)
@@ -103,6 +109,17 @@ with sync_playwright() as p:
  ok(not any('formspree' in x.url for x in req),'failed CAPTCHA load prevents delivery');ctx.close()
  ctx=browser.new_context();req,err=configure(ctx,mode='development',result='error');page=ctx.new_page();page.goto(BASE+'/contact/index.html');fill(page);page.locator('[type=submit]').click();page.wait_for_timeout(500)
  ok('SIMULATED ERROR' in page.locator('#form-status').inner_text() and not req,'local simulated error sends no requests');ctx.close()
+ # Restored contact preferences: SMS and multiple selections.
+ ctx=browser.new_context();req,err=configure(ctx);page=ctx.new_page();page.goto('https://eclipseiq.ca/contact/index.html');fill(page)
+ page.get_by_label('SMS / text',exact=True).check();page.locator('[type=submit]').click()
+ ok(not req,'SMS preference requires a phone number')
+ page.locator('#phone').fill('+1 555 0100');page.locator('[type=submit]').click();page.wait_for_timeout(150)
+ ok(page.locator('#form-status').get_attribute('data-state')=='success','SMS and email preferences can be submitted together')
+ ok('SMS' in req[0].post_data and 'Email' in req[0].post_data,'multiple preferred contact methods are included in provider payload');ctx.close()
+ ctx=browser.new_context();req,err=configure(ctx);page=ctx.new_page();page.goto('https://eclipseiq.ca/contact/index.html');fill(page);page.get_by_label('Email',exact=True).uncheck();page.locator('[type=submit]').click()
+ ok(not req and 'at least one' in page.locator('#form-status').inner_text(),'missing contact preference blocks submission');ctx.close()
+ ctx=browser.new_context();req,err=configure(ctx);page=ctx.new_page();page.goto('https://eclipseiq.ca/contact/index.html');fill(page);page.locator('#website').fill('spam.example');page.locator('[type=submit]').click()
+ ok(not req,'honeypot blocks provider requests');ctx.close()
  # Consent with empty ID: zero external requests even after acceptance.
  ctx=browser.new_context();req,err=configure(ctx,endpoint='');page=ctx.new_page();page.goto('https://eclipseiq.ca/')
  ok(not req,'no external requests before consent')

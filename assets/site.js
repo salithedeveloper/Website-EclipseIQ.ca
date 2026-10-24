@@ -71,7 +71,9 @@
     if (Date.now() < retryAfter) { message("Please wait a few seconds before retrying. Your entries are preserved.", "error", true); return; }
     for (const id of ["name", "email", "company", "message"]) document.getElementById(id).value = document.getElementById(id).value.trim();
     clearPhoneError();
-    if (form.elements.contact_method.value === "Phone" && !phone.value.trim()) phone.setCustomValidity("Please provide a phone number for a call.");
+    const methods = new FormData(form).getAll("contact_method");
+    if ((methods.includes("Phone") || methods.includes("SMS")) && !phone.value.trim()) phone.setCustomValidity("Please provide a phone number for a call or text.");
+    if (!methods.length) { message("Please select at least one preferred contact method.", "error", true); form.querySelector('[name="contact_method"]').focus(); return; }
     if (!form.reportValidity()) return;
     const data = new FormData(form);
     if (data.get("_gotcha")) { message("Unable to submit this inquiry. Please try again later.", "error", true); return; }

@@ -1,0 +1,146 @@
+[
+  {
+    "url": "https://eclipseiq.ca/",
+    "status": 200,
+    "final_url": "https://eclipseiq.ca/",
+    "content_type": "text/html; charset=UTF-8",
+    "bytes": 98217,
+    "title": "Home - EclipseIQ Technologies Inc.",
+    "sha256": "bf574b912c0b3dcecde6e24bef20114a184f9afe2cea0292f5a96fc61329b2db"
+  },
+  {
+    "url": "https://eclipseiq.ca/contact/",
+    "status": 200,
+    "final_url": "https://eclipseiq.ca/contact/",
+    "content_type": "text/html; charset=UTF-8",
+    "bytes": 190762,
+    "title": "Contact - EclipseIQ Technologies Inc.",
+    "sha256": "c3f6c4a313712199a98da0f2c4bdfcd3d41672761118b1e6a78324941a274fa6"
+  },
+  {
+    "url": "https://eclipseiq.ca/faq/",
+    "status": 200,
+    "final_url": "https://eclipseiq.ca/faq/",
+    "content_type": "text/html; charset=UTF-8",
+    "bytes": 134394,
+    "title": "FAQ - EclipseIQ Technologies Inc.",
+    "sha256": "e7e1e685245860f43267f61a742b711ae739aeadc901f6e38371979afbd35c9b"
+  },
+  {
+    "url": "https://eclipseiq.ca/about/",
+    "error": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://eclipseiq.ca/services/",
+    "error": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://eclipseiq.ca/robots.txt",
+    "status": 200,
+    "final_url": "https://eclipseiq.ca/robots.txt",
+    "content_type": "text/plain; charset=utf-8",
+    "bytes": 170,
+    "sha256": "962f8b2b9cbdd1d74ce06649099abeda91ba464328f051db366397b4426aaf18"
+  },
+  {
+    "url": "https://eclipseiq.ca/wp-sitemap.xml",
+    "status": 200,
+    "final_url": "https://eclipseiq.ca/sitemap_index.xml",
+    "content_type": "text/xml; charset=UTF-8",
+    "bytes": 396,
+    "sha256": "6a6b09c927d0e034bcd08898004038619115c7aa7e6b6fe3b406da9e768f0592"
+  },
+  {
+    "url": "https://eclipseiq.ca/sitemap_index.xml",
+    "status": 200,
+    "final_url": "https://eclipseiq.ca/sitemap_index.xml",
+    "content_type": "text/xml; charset=UTF-8",
+    "bytes": 396,
+    "sha256": "6a6b09c927d0e034bcd08898004038619115c7aa7e6b6fe3b406da9e768f0592"
+  },
+  {
+    "url": "https://eclipseiq.ca/wp-json/wp/v2/pages?per_page=100",
+    "status": 200,
+    "final_url": "https://eclipseiq.ca/wp-json/wp/v2/pages?per_page=100",
+    "content_type": "application/json; charset=UTF-8",
+    "bytes": 127336,
+    "sha256": "6d76989f1a3110f689af9237aba24d8ac372ba3c568aa8eff081a2fd8a793f55"
+  },
+  {
+    "url": "https://eclipseiq.ca/wp-content/uploads/2025/04/EclipseIQ-Logo-202-x-88-px.png",
+    "status": 200,
+    "final_url": "https://eclipseiq.ca/wp-content/uploads/2025/04/EclipseIQ-Logo-202-x-88-px.png",
+    "content_type": "image/png",
+    "bytes": 7802,
+    "sha256": "e9edbbf8165884a95bdbf18d2a7007b911fbaf35306d39c65a42bb1036b4b9fd"
+  },
+  {
+    "url": "https://eclipseiq.ca/wp-content/themes/Divi/style-static.min.css?ver=4.27.1",
+    "status": 200,
+    "final_url": "https://eclipseiq.ca/wp-content/themes/Divi/style-static.min.css?ver=4.27.1",
+    "content_type": "text/css",
+    "bytes": 824699,
+    "sha256": "9635a782f1ed98d318d72e6c0a0c40f29b1bb0cb6e3b4e19dd754d9df4a24896"
+  },
+  {
+    "url": "https://eclipseiq.ca/page-sitemap.xml",
+    "status": 200,
+    "final_url": "https://eclipseiq.ca/page-sitemap.xml",
+    "content_type": "text/xml; charset=UTF-8",
+    "bytes": 1522,
+    "sha256": "40a81994647d361a6c85b57385aaefce018d552816a77a8c68c07d6d7ffcc504"
+  },
+  {
+    "url": "https://eclipseiq.ca/page-sitemap.xml",
+    "status": 200,
+    "final_url": "https://eclipseiq.ca/page-sitemap.xml",
+    "content_type": "text/xml; charset=UTF-8",
+    "bytes": 1522,
+    "sha256": "40a81994647d361a6c85b57385aaefce018d552816a77a8c68c07d6d7ffcc504"
+  },
+  {
+    "url": "https://eclipseiq.ca/cookie-policy-ca-2/",
+    "status": 200,
+    "final_url": "https://eclipseiq.ca/cookie-policy-ca-2/",
+    "content_type": "text/html; charset=UTF-8",
+    "bytes": 120529,
+    "title": "Cookie Policy (CA) - EclipseIQ Technologies Inc.",
+    "sha256": "478a4918ed769f472242f0863f5334d711cad0dc6591a734bf9b033232ed5aff"
+  },
+  {
+    "url": "https://eclipseiq.ca/cookie-policy-ca/",
+    "status": 200,
+    "final_url": "https://eclipseiq.ca/cookie-policy-ca/",
+    "content_type": "text/html; charset=UTF-8",
+    "bytes": 117724,
+    "title": "Cookie Policy (CA) - EclipseIQ Technologies Inc.",
+    "sha256": "c6f73575309eb1ca5f340e42cea6b5c3a360074b34f8eda9d4cffb7535224b45"
+  },
+  {
+    "url": "https://eclipseiq.ca/privacy-policy/",
+    "status": 200,
+    "final_url": "https://eclipseiq.ca/privacy-policy/",
+    "content_type": "text/html; charset=UTF-8",
+    "bytes": 116354,
+    "title": "Privacy Policy - EclipseIQ Technologies Inc.",
+    "sha256": "5c19bc180589f743845622d0d9967fca8bba1817be138e460f2ad6e1782eacc1"
+  },
+  {
+    "url": "https://eclipseiq.ca",
+    "status": 200,
+    "final_url": "https://eclipseiq.ca",
+    "content_type": "text/html; charset=UTF-8",
+    "bytes": 98217,
+    "title": "Home - EclipseIQ Technologies Inc.",
+    "sha256": "bf574b912c0b3dcecde6e24bef20114a184f9afe2cea0292f5a96fc61329b2db"
+  },
+  {
+    "url": "https://eclipseiq.ca",
+    "status": 200,
+    "final_url": "https://eclipseiq.ca",
+    "content_type": "text/html; charset=UTF-8",
+    "bytes": 98217,
+    "title": "Home - EclipseIQ Technologies Inc.",
+    "sha256": "bf574b912c0b3dcecde6e24bef20114a184f9afe2cea0292f5a96fc61329b2db"
+  }
+]
