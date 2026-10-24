@@ -1,3 +1,5 @@
+> Current refinement: the approved structure and visual direction remain. The homepage now has a verified EclipseSME demo-request link and a concise practical-value statement. Home and Company describe the combination of senior CIO/COO/CTO-level leadership, insurance operations, architecture and hands-on delivery. FAQ is eight concise answers, including international work, custom software, legacy modernization and scoped implementation timelines. Public email addresses have been removed from active pages; privacy inquiries use the existing contact form. Earlier statements below about retaining a direct email or six FAQ answers are historical. No staff biographies, credentials, customer claims or guaranteed timelines were added.
+
 # Current direction: a concise corporate website
 
 This document supersedes previous visual directions. The actual website files, including root `index.html`, are the review surface. Earlier concepts remain historical and unchanged.

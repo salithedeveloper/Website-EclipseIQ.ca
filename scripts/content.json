@@ -89,15 +89,23 @@
   "faq": [
     [
       "Which organizations do you work with?",
-      "We work with insurers, MGAs, reinsurers, brokers, program administrators and specialty insurance organizations in Canada and internationally."
+      "We work with insurers, MGAs, reinsurers, brokers, program administrators and specialty insurance organizations."
+    ],
+    [
+      "Do you work with international clients?",
+      "Yes. EclipseIQ is based in Canada and works with insurance organizations in Canada and internationally. Engagements are scoped around each organization’s business and technology requirements."
     ],
     [
       "Do you work with platforms other than EclipseSME?",
       "Yes. We provide advisory, implementation, integration and modernization services for third-party insurance platforms, as well as custom development."
     ],
     [
-      "Can you help modernize existing systems and migrate data?",
-      "Yes. We assess existing systems, plan improvements and support integrations, enhancements and data conversion or migration. The approach depends on your business priorities and technical requirements."
+      "Do you provide custom software solutions?",
+      "Yes. We develop software and integrations for specialized insurance requirements. We also configure EclipseSME products, workflows, forms and business rules to fit your operations."
+    ],
+    [
+      "Can you modernize legacy insurance systems?",
+      "Yes. We assess legacy systems and support enhancements, integrations, custom development and data migration. We plan the work around your business priorities and existing operations."
     ],
     [
       "What does fractional leadership involve?",
@@ -108,8 +116,8 @@
       "A review of your systems, processes, data, integrations and governance. It identifies risks and opportunities and provides a prioritized improvement roadmap."
     ],
     [
-      "How are projects scoped and priced?",
-      "We begin with your requirements and agree the scope, deliverables, timeline and pricing before work begins. Software implementation timelines depend on configuration, integration and migration needs."
+      "How long does implementation take, and how is a project scoped?",
+      "Timelines depend on product complexity, configuration, integrations and data migration. After assessing your requirements, we agree the scope, deliverables, implementation plan, timeline and pricing before work begins."
     ]
   ]
 }

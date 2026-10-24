@@ -13,8 +13,8 @@ Alternatively, run `python -m http.server 4173` in this directory and open http:
 - Home: company positioning, three service summaries, EclipseSME product section, company introduction and contact link.
 - Services: consulting, engineering/modernization, fractional leadership and software, plus concise audit readiness, security and coaching support.
 - Company: insurance experience, audiences and engagement options.
-- Contact: existing inquiry form and verified direct email address.
-- Common questions: six short answers, linked from the footer.
+- Contact: existing inquiry form with configurable Formspree delivery; no public email address.
+- Common questions: eight short answers, linked from the footer.
 - Cookies & privacy: existing consent foundations and compatibility URLs.
 
 Navigation focuses on Services, Company, EclipseSME and Contact. There is no interactive service explorer, abstract capability diagram or FAQ search. The historical `review/homepage-concepts` folder is unchanged and is not part of the active website.

@@ -35,3 +35,6 @@ body{font-size:15px}h1,h2,h3{font-weight:650}h2{line-height:1.2;letter-spacing:-
 /* Turquoise calls to action use dark brand ink for readable contrast. */
 .hero-copy .button,.contact-strip .button{color:#022b3e}
 .hero-copy .button:hover,.contact-strip .button:hover{background:#70cddc;border-color:#70cddc;color:#022b3e}
+/* Corporate product section: a clear demo action alongside platform exploration. */
+.product-actions{display:flex;align-items:center;flex-wrap:wrap;gap:15px 24px;margin-top:23px}.product-actions .button{margin-top:0}.product-actions .text-link{font-size:12px}
+@media(max-width:600px){.product-actions{gap:16px 21px}.product-actions .button{margin-top:0}.product-actions .text-link{font-size:11px}}

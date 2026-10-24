@@ -89,9 +89,10 @@ with sync_playwright() as p:
  ctx=browser.new_context();page=ctx.new_page();page.goto(BASE+'/')
  ok(page.locator('.service-overview article').count()==3,'three clear corporate service areas')
  ok(page.locator('#eclipsesme').is_visible(),'EclipseSME is a distinct corporate product section')
+ ok(page.get_by_role('link',name='Request a Demo',exact=False).get_attribute('href')=='https://eclipsesme.com/contact/','demo CTA goes to the verified product demo page')
  ok(page.locator('[data-explorer]').count()==0,'no service explorer complexity')
  page.goto(BASE+'/services/index.html#security');ok(page.locator('#security').is_visible(),'security review remains directly linkable')
- page.goto(BASE+'/faq/index.html');ok(page.locator('#faq-answers details').count()==6,'FAQ consolidated to six practical questions')
+ page.goto(BASE+'/faq/index.html');ok(page.locator('#faq-answers details').count()==8,'FAQ includes eight concise practical questions')
  page.emulate_media(reduced_motion='reduce');ok(page.evaluate('getComputedStyle(document.documentElement).scrollBehavior')=='auto','reduced motion disables smooth scrolling');ctx.close()
  ctx=browser.new_context(java_script_enabled=False);page=ctx.new_page();page.set_viewport_size({'width':390,'height':844});page.goto(BASE+'/')
  ok(page.locator('#navigation').is_visible(),'navigation works without JavaScript')
@@ -102,7 +103,9 @@ with sync_playwright() as p:
  ok(page.locator('[type=submit]').is_disabled(),'public development mode fails closed')
  ok(not req,'no provider requests from unconfigured production preview');ctx.close()
  for kw,label in [({'endpoint':''},'empty endpoint'),({'mode':'invalid'},'invalid mode'),({'required':True},'missing required CAPTCHA key')]:
-  ctx=browser.new_context();configure(ctx,**kw);page=ctx.new_page();page.goto('https://eclipseiq.ca/contact/index.html');ok(page.locator('[type=submit]').is_disabled(),label+' fails closed');ctx.close()
+  ctx=browser.new_context();configure(ctx,**kw);page=ctx.new_page();page.goto('https://eclipseiq.ca/contact/index.html');ok(page.locator('[type=submit]').is_disabled(),label+' fails closed')
+  page.locator('#inquiry-form').evaluate('(f)=>f.dispatchEvent(new Event("submit",{bubbles:true,cancelable:true}))')
+  ok(page.locator('#form-status').get_attribute('data-state')=='error' and not req,label+' cannot report success or send a request');ctx.close()
  for response in ['success','ambiguous','malformed','rate','network']:
   ctx=browser.new_context();req,err=configure(ctx,response=response);page=ctx.new_page();page.goto('https://eclipseiq.ca/contact/index.html')
   page.locator('[type=submit]').click();ok(not req,'invalid required fields block request')

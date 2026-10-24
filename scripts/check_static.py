@@ -38,6 +38,7 @@ for f in pages:
  text=f.read_text()
  assert 'Temporary logo placeholder' not in text, f'Placeholder branding: {f}'
  assert 'assets/eclipseiq-logo-original.png' in text, f'Missing original logo: {f}'
+ assert 'mailto:' not in text and not re.search(r'[A-Za-z0-9._%+-]+@eclipseiq\.ca',text), f'Public email address: {f}'
 for name in ['privacy','cookie-policy-ca','cookie-policy-ca-2']:
  text=(ROOT/name/'index.html').read_text()
  assert 'https://eclipseiq.ca/privacy-policy/' in text and 'name="robots" content="noindex"' in text
