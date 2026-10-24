@@ -32,7 +32,7 @@ for f,p in pages.items():
   if target.is_dir():target=target/'index.html'
   assert target.exists(),f'Broken reference {f}: {ref}'
   if u.fragment and target in pages:assert u.fragment in pages[target].ids,f'Broken fragment: {ref}'
-assert len(pages)==10
+assert len(pages)==11
 assert hashlib.sha256((ROOT/'assets/eclipseiq-logo-original.png').read_bytes()).hexdigest()=='e9edbbf8165884a95bdbf18d2a7007b911fbaf35306d39c65a42bb1036b4b9fd', 'Original logo bytes changed'
 for f in pages:
  text=f.read_text()
@@ -47,4 +47,4 @@ ET.parse(ROOT/'sitemap.xml')
 for f in (ROOT/'assets').glob('*.js'):
  text=f.read_text()
  assert not re.search(r'G-6N90S2Y3DE|13041110|82fea225|eclipsesme\.analytics-consent',text),f'Reference identifiers: {f}'
-print('PASS: 10 pages; local links, fragments, IDs, metadata, external link security, sitemap, identifier isolation, original logo integrity and legacy privacy URLs')
+print('PASS: 11 pages; local links, fragments, IDs, metadata, external link security, sitemap, identifier isolation, original logo integrity and legacy privacy URLs')

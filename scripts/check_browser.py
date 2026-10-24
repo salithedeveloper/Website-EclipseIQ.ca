@@ -57,7 +57,7 @@ with sync_playwright() as p:
  browser=p.chromium.launch(executable_path=CHROME,headless=True,args=['--no-sandbox'])
  # Real static server: links, rendering and runtime errors at all sizes.
  ctx=browser.new_context();page=ctx.new_page();errs=[];page.on('pageerror',lambda e:errs.append(str(e)))
- paths=['/','/services/index.html','/about/index.html','/faq/index.html','/contact/index.html','/privacy-policy/index.html','/404.html','/privacy/index.html','/cookie-policy-ca/index.html','/cookie-policy-ca-2/index.html']
+ paths=['/','/products/index.html','/services/index.html','/about/index.html','/faq/index.html','/contact/index.html','/privacy-policy/index.html','/404.html','/privacy/index.html','/cookie-policy-ca/index.html','/cookie-policy-ca-2/index.html']
  for width in [1440,1024,768,390,320]:
   page.set_viewport_size({'width':width,'height':900})
   for path in paths:
@@ -87,12 +87,19 @@ with sync_playwright() as p:
  ctx.close()
  # Concise corporate content and native disclosure behaviour.
  ctx=browser.new_context();page=ctx.new_page();page.goto(BASE+'/')
- ok(page.locator('.service-overview article').count()==3,'three clear corporate service areas')
+ ok(page.locator('.offerings-composition article h3').all_text_contents()==['Insurance Software','Insurance Software Implementation & Modernization','Insurance Technology Consulting','Fractional CIO / COO / CTO Leadership'],'four offerings in the requested order')
+ ok(page.locator('#navigation').get_by_role('link',name='Products',exact=True).is_visible(),'Products is a primary navigation item')
+ ok(page.locator('#navigation').get_by_role('link',name='FAQ',exact=True).is_visible(),'FAQ is a primary navigation item')
+ ok(page.locator('.faq-preview details').count()==3,'homepage FAQ preview provides three concise answers')
+ page.goto(BASE+'/products/index.html')
+ ok(page.locator('.product-catalog .product-feature').count()==1 and page.locator('.product-name').inner_text()=='EclipseSME™','only the available flagship product is published')
+ ok(page.locator('#navigation a[aria-current=page]').inner_text()=='Products','product catalog navigation reflects current page')
+ page.goto(BASE+'/')
  ok(page.locator('#eclipsesme').is_visible(),'EclipseSME is a distinct corporate product section')
  ok(page.get_by_role('link',name='Request a Demo',exact=False).get_attribute('href')=='https://eclipsesme.com/contact/','demo CTA goes to the verified product demo page')
  ok(page.locator('[data-explorer]').count()==0,'no service explorer complexity')
  page.goto(BASE+'/services/index.html#security');ok(page.locator('#security').is_visible(),'security review remains directly linkable')
- page.goto(BASE+'/faq/index.html');ok(page.locator('#faq-answers details').count()==8,'FAQ includes eight concise practical questions')
+ page.goto(BASE+'/faq/index.html');ok(page.locator('#faq-answers details').count()==9,'FAQ includes nine concise practical questions')
  page.emulate_media(reduced_motion='reduce');ok(page.evaluate('getComputedStyle(document.documentElement).scrollBehavior')=='auto','reduced motion disables smooth scrolling');ctx.close()
  ctx=browser.new_context(java_script_enabled=False);page=ctx.new_page();page.set_viewport_size({'width':390,'height':844});page.goto(BASE+'/')
  ok(page.locator('#navigation').is_visible(),'navigation works without JavaScript')
@@ -103,7 +110,7 @@ with sync_playwright() as p:
  ok(page.locator('[type=submit]').is_disabled(),'public development mode fails closed')
  ok(not req,'no provider requests from unconfigured production preview');ctx.close()
  for kw,label in [({'endpoint':''},'empty endpoint'),({'mode':'invalid'},'invalid mode'),({'required':True},'missing required CAPTCHA key')]:
-  ctx=browser.new_context();configure(ctx,**kw);page=ctx.new_page();page.goto('https://eclipseiq.ca/contact/index.html');ok(page.locator('[type=submit]').is_disabled(),label+' fails closed')
+  ctx=browser.new_context();req,err=configure(ctx,**kw);page=ctx.new_page();page.goto('https://eclipseiq.ca/contact/index.html');ok(page.locator('[type=submit]').is_disabled(),label+' fails closed')
   page.locator('#inquiry-form').evaluate('(f)=>f.dispatchEvent(new Event("submit",{bubbles:true,cancelable:true}))')
   ok(page.locator('#form-status').get_attribute('data-state')=='error' and not req,label+' cannot report success or send a request');ctx.close()
  for response in ['success','ambiguous','malformed','rate','network']:

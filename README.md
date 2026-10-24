@@ -1,39 +1,47 @@
-# EclipseIQ corporate website
+# EclipseIQ insurance technology products & services
 
-A concise static corporate website for EclipseIQ Technologies Inc. The content starts with the live corporate site's insurance software, consulting and senior leadership positioning. No framework or package installation is required.
+A static corporate website for EclipseIQ Technologies Inc., with proprietary insurance software, implementation and modernization, InsurTech consulting and fractional executive leadership.
 
 ## Review locally
 
-Run `git pull` on `feat/eclipseiq-website-redesign`, then open the root `index.html` in a browser. Relative links include explicit `index.html` filenames; the original logo, font and photograph are local. No build step is needed.
+On `feat/eclipseiq-website-redesign`, run `git pull` and open root `index.html`. No build step, framework or package installation is needed. Internal links use explicit relative `index.html` filenames; fonts and the original logo are local.
 
-Alternatively, run `python -m http.server 4173` in this directory and open http://localhost:4173.
+For an HTTP preview, run `python -m http.server 4173` and open http://localhost:4173.
 
-## Site structure
+## Website structure
 
-- Home: company positioning, three service summaries, EclipseSME product section, company introduction and contact link.
-- Services: consulting, engineering/modernization, fractional leadership and software, plus concise audit readiness, security and coaching support.
-- Company: insurance experience, audiences and engagement options.
-- Contact: existing inquiry form with configurable Formspree delivery; no public email address.
-- Common questions: eight short answers, linked from the footer.
-- Cookies & privacy: existing consent foundations and compatibility URLs.
+- **Home:** products-and-services positioning, flagship product, four ordered offerings, company experience and FAQ preview.
+- **Products:** a public product catalogue, currently featuring only EclipseSME™, its capabilities and implementation support.
+- **Our Offerings:** Insurance Software; Insurance Software Implementation & Modernization; Insurance Technology Consulting; Fractional CIO / COO / CTO Leadership. Audit readiness, security reviews, Totality Assessment and coaching are retained within their practices.
+- **Company:** product development, insurance experience and expertise across our own and third-party platforms.
+- **FAQ:** nine concise answers in two groups, with native expandable questions.
+- **Contact:** the existing configurable inquiry form and contact preferences. No publicly displayed email address.
+- **Cookies & privacy:** consent controls and existing compatibility URLs.
 
-Navigation focuses on Services, Company, EclipseSME and Contact. There is no interactive service explorer, abstract capability diagram or FAQ search. The historical `review/homepage-concepts` folder is unchanged and is not part of the active website.
+## Products and future additions
 
-## Maintain
+`scripts/content.json` contains the public product catalogue. Products render only when `published` is explicitly `true`. Each entry supplies its own name, content, links, capabilities and illustrative workflow labels. Both the homepage and Products page use a shared product feature component that accommodates additional released products.
 
-Templates live in `scripts/build.py`; concise page metadata, services and questions live in `scripts/content.json`. Contact and privacy markup live in `scripts/partials/`. After editing these sources, run `python scripts/build.py` and commit the generated HTML as well. The generated root `index.html` is the actual website, not a concept.
+EclipseSME is the only published entry. Unreleased ideas are not displayed; no availability, feature descriptions or launch dates are implied for them. Do not mark a draft published until the owner approves its public content.
 
-Styles and scripts live in `assets/`. Public form/analytics configuration remains in `assets/config.js`. The form currently simulates submissions locally; live delivery requires EclipseIQ's own Formspree endpoint. Optional analytics remains unconfigured and consent-gated. No private keys belong in these files.
+## Maintenance
 
-## Verification
+Templates: `scripts/build.py`. Content and metadata: `scripts/content.json`. Contact/privacy markup: `scripts/partials/`. Run `python scripts/build.py` after source edits and commit generated HTML. Root `index.html` remains the actual website.
+
+The visual system is in `assets/styles.css`; navigation, form handling and consent use classic local JavaScript. The actual logo is unchanged. Capability illustrations use HTML/CSS and original SVG icons, not product screenshots, stock photos or claims of operational results. Earlier photographic assets and `review/homepage-concepts/` are historical and unused by the current layouts.
+
+Formspree and optional analytics remain configurable in `assets/config.js`. Local submissions are explicitly simulated. Public hosting fails closed without valid production configuration and a dedicated EclipseIQ endpoint. No real inquiry or analytics traffic is sent by the test suite.
+
+## Checks
 
 ```sh
 python scripts/check_static.py
+python scripts/check_catalog.py
 node --check assets/config.js
 node --check assets/site.js
 node --check assets/consent.js
 ```
 
-For browser checks, start the local server and run `python scripts/check_browser.py`. Requires the existing Playwright and Chromium environment. The suite intercepts external providers; it never sends real inquiries or analytics. `ECLIPSEIQ_TEST_URL` can select another local port. Screenshots are saved to ignored `.test-results/`.
+With Playwright and Chromium installed, start the local server and run `python scripts/check_browser.py`. `ECLIPSEIQ_TEST_URL` selects a different port. Screenshots go to ignored `.test-results/`. `scripts/social.py` regenerates the corporate sharing image.
 
-See `docs/creative-direction.md`, `docs/assets.md`, `docs/validation.md` and `docs/configuration.md`. This branch is for local review. No deployment or live WordPress changes are included.
+Nothing is deployed. The live WordPress website and EclipseSME repository are unchanged.

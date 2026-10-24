@@ -2,18 +2,18 @@
   "pages": {
     "home": [
       "",
-      "Insurance technology solutions",
-      "EclipseIQ Technologies Inc. combines insurance software, technology consulting, software engineering and fractional CIO / COO / CTO leadership."
+      "Insurance technology products & services",
+      "EclipseIQ develops insurance software products and delivers implementation, integration, modernization, InsurTech consulting and fractional executive leadership."
     ],
     "services": [
       "services/",
-      "Services & capabilities",
-      "Insurance technology consulting, software engineering, systems modernization, fractional leadership and EclipseSME implementation."
+      "Our offerings",
+      "Insurance software, implementation and modernization, InsurTech consulting and fractional CIO / COO / CTO leadership from EclipseIQ."
     ],
     "about": [
       "about/",
       "About EclipseIQ",
-      "A Canadian insurance technology company with executive leadership and hands-on experience in insurance operations, software and modernization."
+      "EclipseIQ Technologies Inc. is a Canadian insurance technology products and services company combining software development with insurance industry experience."
     ],
     "faq": [
       "faq/",
@@ -34,62 +34,67 @@
       "404.html",
       "Page not found",
       "Return to EclipseIQ Technologies Inc. or explore our insurance technology services."
+    ],
+    "products": [
+      "products/",
+      "Insurance software products",
+      "Discover EclipseSME™, EclipseIQ’s flagship cloud insurance software for MGAs, insurers and specialty insurance organizations."
     ]
   },
   "offerings": [
     [
-      "consulting",
-      "Technology consulting",
-      "Practical advice for technology decisions.",
-      "Align technology plans with your insurance business. We review systems and operations, identify priorities and develop a practical roadmap.",
+      "software",
+      "Insurance Software",
+      "Proprietary products. Practical insurance technology.",
+      "We develop insurance software for the work behind your operations. EclipseSME™, our flagship product, brings underwriting, policy administration, billing and reporting into a configurable cloud platform.",
       [
-        "Technology strategy and solution architecture",
-        "Eclipse Totality Assessment™",
-        "Technology selection and implementation advice"
+        "Proprietary software, developed by EclipseIQ",
+        "Configurable products and operational workflows",
+        "Implementation and ongoing support"
       ],
-      "consulting"
+      "software"
     ],
     [
       "transformation",
-      "Software engineering & modernization",
-      "Build, improve and connect your systems.",
-      "We provide custom development, systems modernization and integration services for EclipseSME and third-party insurance platforms.",
+      "Insurance Software Implementation & Modernization",
+      "Your platform. Our implementation expertise.",
+      "Implement EclipseIQ or third-party insurance platforms, connect systems and modernize existing technology. We work with other vendors’ systems as well as our own.",
       [
-        "Custom software development and system enhancements",
-        "Integrations, data conversion and migration",
-        "Workflow improvement, data and analytics"
+        "Platform implementation and system integration",
+        "Data conversion, migration and legacy modernization",
+        "Custom software engineering and enhancements"
       ],
       "engineering"
     ],
     [
-      "leadership",
-      "Fractional CIO / COO / CTO leadership",
-      "Senior leadership, scoped to your needs.",
-      "Bring experienced technology and operational leadership into periods of change, transition or complex delivery.",
+      "consulting",
+      "Insurance Technology Consulting",
+      "Insurance context for technology decisions.",
+      "InsurTech advisory, technology strategy and solution architecture grounded in your insurance operations. Identify priorities and define a practical transformation roadmap.",
       [
-        "Technology strategy and investment decisions",
-        "Transformation oversight and governance",
+        "Eclipse Totality Assessment™",
+        "Technology selection and operational improvement",
+        "Audit readiness and security reviews"
+      ],
+      "consulting"
+    ],
+    [
+      "leadership",
+      "Fractional CIO / COO / CTO Leadership",
+      "Senior leadership with delivery experience.",
+      "Bring experienced technology and operational leadership into transitions, complex delivery and transformation initiatives.",
+      [
+        "Technology governance and investment decisions",
+        "Transformation oversight and operational alignment",
         "Team development and coaching"
       ],
       "leadership"
-    ],
-    [
-      "software",
-      "Insurance software",
-      "EclipseSME™ and implementation services.",
-      "EclipseSME is our configurable cloud insurance platform. We help align products, workflows, data and integrations with your operating requirements.",
-      [
-        "Underwriting and policy administration",
-        "Billing, reporting and partner integrations",
-        "Configuration, implementation and support"
-      ],
-      "software"
     ]
   ],
   "faq": [
     [
-      "Which organizations do you work with?",
-      "We work with insurers, MGAs, reinsurers, brokers, program administrators and specialty insurance organizations."
+      "What insurance software do you offer?",
+      "EclipseSME™ is our flagship product: configurable cloud software for underwriting, policy administration, billing and reporting. It is designed for MGAs, insurers and specialty insurance organizations."
     ],
     [
       "Do you work with international clients?",
@@ -117,7 +122,70 @@
     ],
     [
       "How long does implementation take, and how is a project scoped?",
-      "Timelines depend on product complexity, configuration, integrations and data migration. After assessing your requirements, we agree the scope, deliverables, implementation plan, timeline and pricing before work begins."
+      "Timelines depend on product complexity, configuration, integrations and data migration. After assessing your requirements, we agree the scope, deliverables, implementation plan and timeline before work begins."
+    ],
+    [
+      "How are services and software priced?",
+      "Pricing is based on your requirements. Consulting and implementation proposals set out scope, deliverables, timeline and pricing before work begins. Contact us to discuss software configuration and implementation needs."
     ]
+  ],
+  "products": [
+    {
+      "id": "eclipsesme",
+      "name": "EclipseSME",
+      "trademark": "™",
+      "category": "Cloud insurance software",
+      "tag": "Flagship product",
+      "heading": "The policy lifecycle. In one configurable platform.",
+      "description": "EclipseSME brings underwriting, policy administration, billing and reporting together for MGAs, insurers and specialty insurance organizations.",
+      "benefit": "Configure products and workflows around your operating model, reduce manual work and connect your insurance partners.",
+      "audience": "For MGAs, insurers & specialty insurance organizations",
+      "url": "https://eclipsesme.com/",
+      "demo_url": "https://eclipsesme.com/contact/",
+      "capabilities": [
+        "Underwriting & policy administration",
+        "Billing & receivables",
+        "Reporting & operational visibility",
+        "Partner integrations & role-based access"
+      ],
+      "visual_title": "From submission to renewal.",
+      "visual_label": "Policy lifecycle",
+      "workflow_stages": [
+        "Quote",
+        "Bind",
+        "Renew"
+      ],
+      "published": true,
+      "visual_footer": [
+        "Configurable workflows",
+        "Partner integrations",
+        "Role-based access"
+      ]
+    }
+  ],
+  "faq_groups": [
+    {
+      "id": "software",
+      "title": "Software & implementation",
+      "intro": "Products, customization and delivery.",
+      "questions": [
+        0,
+        2,
+        3,
+        4,
+        7
+      ]
+    },
+    {
+      "id": "working-together",
+      "title": "Working with EclipseIQ",
+      "intro": "Expertise, engagements and practical details.",
+      "questions": [
+        1,
+        5,
+        6,
+        8
+      ]
+    }
   ]
 }

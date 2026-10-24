@@ -1,44 +1,46 @@
-> Current refinement: the approved structure and visual direction remain. The homepage now has a verified EclipseSME demo-request link and a concise practical-value statement. Home and Company describe the combination of senior CIO/COO/CTO-level leadership, insurance operations, architecture and hands-on delivery. FAQ is eight concise answers, including international work, custom software, legacy modernization and scoped implementation timelines. Public email addresses have been removed from active pages; privacy inquiries use the existing contact form. Earlier statements below about retaining a direct email or six FAQ answers are historical. No staff biographies, credentials, customer claims or guaranteed timelines were added.
+# Current direction: insurance technology products and services
 
-# Current direction: a concise corporate website
+This direction supersedes earlier layout and positioning notes. The actual root `index.html` and existing website pages are the review surface; no new concept or review directory is used.
 
-This document supersedes previous visual directions. The actual website files, including root `index.html`, are the review surface. Earlier concepts remain historical and unchanged.
+## Positioning and content hierarchy
 
-## Content decisions
+EclipseIQ is an insurance technology products and services company. The homepage leads with proprietary insurance software and the capability to implement, integrate, modernize and support insurance systems. Consulting and fractional leadership complement product development and delivery, rather than defining the whole company.
 
-Re-reviewed all six pages listed in the live WordPress page sitemap: home, contact, FAQ, privacy policy and the two cookie policy pages. The live site has no separate Services or Company page. Read the live homepage and FAQ for the insurance software, consulting, modernization, custom development, data migration and fractional leadership capabilities. The live privacy page verifies `support@eclipseiq.ca` as a contact address. No customer claims, credentials, metrics or new services are added.
+The main navigation is Products, Our Offerings, Company, FAQ and Contact. The homepage moves from a product-and-delivery introduction to a substantial EclipseSME feature, four ordered offerings, company experience, an FAQ preview and contact.
 
-Primary sources:
-- https://eclipseiq.ca/
-- https://eclipseiq.ca/faq/
-- https://eclipseiq.ca/contact/
-- https://eclipseiq.ca/privacy-policy/
-- https://eclipseiq.ca/cookie-policy-ca/
-- https://eclipseiq.ca/cookie-policy-ca-2/
-- https://eclipseiq.ca/page-sitemap.xml
-- https://eclipsesme.com/
+The offering order is explicit:
 
-The source site's six pages were fetched successfully over HTTPS. The sitemap also references two images; these are media, not additional pages. Website research connector access to the privacy URLs was unavailable, so the successful direct HTTPS reads were used instead.
+1. Insurance Software.
+2. Insurance Software Implementation & Modernization.
+3. Insurance Technology Consulting.
+4. Fractional CIO / COO / CTO Leadership.
 
-Home leads with insurance technology, software, consulting and senior leadership. Three brief service summaries link to a compact Services page. EclipseSME is one corporate product section rather than the whole company story. Company background and engagement context are shortened. The main navigation has four destinations; six practical FAQ answers are a footer resource instead of a primary destination. Existing legal and compatibility URLs remain intact.
+Third-party platform work is explicit in the implementation offering and FAQ. Audit readiness, security reviews and Eclipse Totality Assessment™ sit within consulting; coaching sits within leadership. The FAQ has nine concise answers covering software, third-party platforms, customization, legacy modernization, implementation scope/timelines, international work, leadership, assessment and pricing.
 
-The eight original service areas are consolidated, not discarded: consulting includes the Totality Assessment; engineering includes modernization, integrations and migration; fractional leadership includes coaching; software includes EclipseSME and implementation. Audit readiness, security reviews and team development remain concise supporting services. Implementation promises and repetitive platform pitches are removed.
+## Product presentation and publication
 
-## Visual decisions
+EclipseSME is the only published product. Its purposes, audience and capabilities are grounded in the live product website and corporate FAQ. Product and demo calls to action link to the product website. No unreleased product is named publicly, described, dated or presented as available.
 
-The approved content is unchanged. This visual-only revision adds a dark navy photographic hero with a turquoise caption inset; photographic service panels with larger click targets; a pale blue product section with original document artwork; an editorial company composition; and consistent dark/light treatments on the interior pages. Headings remain moderate. On mobile, service photography becomes a compact thumbnail alongside each existing description. No new sections, copy, service claims or page destinations are introduced.
+The Products page and homepage share a data-driven product feature. A product renders only with `published: true`; the default for other entries is not public. Each entry provides its own description, capabilities, links and illustration labels. This lets future approved products use the same catalogue without another site redesign.
 
-The real corporate logo and blue/turquoise palette remain. Original generated editorial images illustrate engineering and planning without claiming to show EclipseIQ employees or an actual product interface. See `assets.md` for provenance.
+## Visual system
 
-Real visual references reviewed for this revision:
+White logo header; pale blue corporate introduction; a substantial navy product section; a two-column flagship feature; four deliberately different offering presentations; a concise experience section; and grouped expandable FAQs. Typography remains moderate, with a single coherent Manrope family and blue/turquoise palette.
 
-- [EclipseSME](https://eclipsesme.com/): consistent typography, dark/light contrast and substantial visual presentation. Corporate navigation and service emphasis remain specific to EclipseIQ.
-- [Endava](https://www.endava.com/): a stronger dark hero and confident enterprise presentation. The [secondary homepage screenshot](https://group107.com/blog/enterprise-software-development-companies/) informed contrast and composition, without adopting its abstract graphics or oversized slogan.
-- [Thoughtworks](https://www.thoughtworks.com/): imagery with a clear technology context and visual variety between capabilities. [Screenshot references](https://blog.naitive.cloud/generative-ai-in-legacy-workflows-training-guide/) were used for visual research, not as source assets.
-- [EPAM visual references](https://www.wisemonk.io/de-de/blogs/software-development-outsourcing-companies): integrated hero imagery and a restrained navigation system. The source is a secondary screenshot, not a claim about the current live design.
+No generic stock photography is used in active layouts. The visual language uses recognizable insurance documents, workflow stages and implementation connections. The illustrations explain actual capability areas and are explicitly labelled as capability illustrations, not product screens. There are no fabricated customer metrics, client logos, credentials or staff identities, decorative animation, generic gradients or abstract network diagrams.
 
-Primary sites were read for context; secondary screenshots provided visual references and may show earlier states. No code, copy, logos or images were copied from the inspiration sites. EclipseSME remains a visual-quality benchmark, not the corporate site's design template. The existing EclipseSME repository is unchanged.
+## Research and factual references
 
-## Behaviour retained
+- https://eclipsesme.com/ — current product purpose, audience, underwriting, policy administration, billing, reporting, configurable workflows, integration and access control. Benchmark for professional execution, not a copied corporate design.
+- https://eclipsesme.com/contact/ — verified demo destination.
+- https://eclipseiq.ca/ and https://eclipseiq.ca/faq/ — services, platform ownership, international work, architecture, custom development, third-party implementation, assessments, migration, leadership and scoped proposals.
+- https://www.duckcreek.com/ and https://sapiens.com/ — reviewed enterprise InsurTech information architecture: products and implementation services as related but distinct capabilities.
+- https://www.10xsheets.com/blog/insurance-software/ and https://www.verifiedmarketresearch.com/blog/top-pc-insurance-software/ — secondary screenshot references for product prominence and corporate navigation. These may show earlier site states. No proprietary copy, CSS or images were taken from these references.
 
-Original inquiry validation, email/phone/SMS preferences, honeypot, optional CAPTCHA, local simulation, provider response handling and failure states remain. Optional analytics still requires explicit consent and configured analytics identity. Privacy controls, canonical metadata, structured Organization data, sitemap, legacy policy URLs and relative local-file paths remain. Direct email is available independently of form configuration.
+The owner's current brief explicitly establishes the products-and-services positioning and future product vision. It does not establish any additional released product. Earlier source audits remain historical evidence, not retention requirements for every original paragraph.
+
+## Functionality retained
+
+The inquiry processor, required fields, email/phone/SMS preferences, conditional phone requirement, honeypot, optional CAPTCHA and Formspree configuration are retained. Topic labels/order reflect the new positioning, with stable values for the processor. Local simulation remains labelled; unconfigured production remains disabled and cannot report success. No public email address is displayed.
+
+Consent and analytics preparation remain unchanged. Canonical/social metadata, Organization schema, local-file links, policy compatibility URLs, sitemap and responsive navigation remain. Nothing is deployed, and neither WordPress nor the EclipseSME repository is modified.
