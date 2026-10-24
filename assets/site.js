@@ -24,62 +24,6 @@
     window.matchMedia("(min-width: 851px)").addEventListener("change", closeMenu);
   }
 
-  // Priority explorer: substantive service paths with native keyboard tab behavior.
-  document.querySelectorAll("[data-explorer]").forEach(explorer => {
-    const tabs = [...explorer.querySelectorAll("[data-pathway]")];
-    const panels = [...explorer.querySelectorAll("[data-pathway-panel]")];
-    const tablist = explorer.querySelector("[role=tablist]");
-    const activate = (tab, focus = false) => {
-      tabs.forEach(item => {
-        const active = item === tab;
-        item.setAttribute("aria-selected", String(active));
-        item.tabIndex = active ? 0 : -1;
-      });
-      panels.forEach(panel => {
-        panel.hidden = panel.dataset.pathwayPanel !== tab.dataset.pathway;
-        panel.setAttribute("role", "tabpanel");
-        panel.setAttribute("aria-labelledby", "tab-" + panel.dataset.pathwayPanel);
-        panel.tabIndex = 0;
-      });
-      if (focus) tab.focus();
-    };
-    tablist.hidden = false;
-    tabs.forEach((tab, index) => {
-      tab.addEventListener("click", () => activate(tab));
-      tab.addEventListener("keydown", event => {
-        let next;
-        if (["ArrowDown", "ArrowRight"].includes(event.key)) next = (index + 1) % tabs.length;
-        if (["ArrowUp", "ArrowLeft"].includes(event.key)) next = (index - 1 + tabs.length) % tabs.length;
-        if (event.key === "Home") next = 0;
-        if (event.key === "End") next = tabs.length - 1;
-        if (next !== undefined) { event.preventDefault(); activate(tabs[next], true); }
-      });
-    });
-    activate(tabs[0]);
-  });
-  // Direct service links reveal the relevant native disclosure.
-  const revealService = () => {
-    const target = document.getElementById(location.hash.slice(1));
-    if (target?.matches("details.service-entry")) target.open = true;
-  };
-  revealService();
-  window.addEventListener("hashchange", revealService);
-  const search = document.getElementById("faq-search");
-  if (search) {
-    search.closest(".faq-search").hidden = false;
-    search.addEventListener("input", () => {
-      const term = search.value.trim().toLocaleLowerCase();
-      let count = 0;
-      document.querySelectorAll("#faq-answers details").forEach(item => {
-        const match = item.textContent.toLocaleLowerCase().includes(term);
-        item.hidden = !match;
-        if (match) count++;
-      });
-      document.getElementById("faq-count").textContent = `${count} ${count === 1 ? "question" : "questions"}`;
-      document.getElementById("faq-empty").hidden = count > 0;
-    });
-  }
-
   const form = document.getElementById("inquiry-form");
   if (!form) return;
   const config = window.ECLIPSEIQ_CONFIG?.form || {};

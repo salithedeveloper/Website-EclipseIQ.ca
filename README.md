@@ -1,44 +1,39 @@
 # EclipseIQ corporate website
 
-A static corporate website with a new editorial design direction, grounded in the verified live EclipseIQ content audit. HTML, CSS and classic JavaScript; no runtime framework or package installation required.
+A concise static corporate website for EclipseIQ Technologies Inc. The content starts with the live corporate site's insurance software, consulting and senior leadership positioning. No framework or package installation is required.
 
 ## Review locally
-Extract the review archive and open `index.html` from File Explorer. Internal links use explicit relative `index.html` paths. Fonts, original logo and supporting image are self-hosted. Local contact submissions are clearly marked simulations and never reach Formspree. Browser storage persistence on file origins can vary.
 
-Or run from this directory:
+Run `git pull` on `feat/eclipseiq-website-redesign`, then open the root `index.html` in a browser. Relative links include explicit `index.html` filenames; the original logo, font and photograph are local. No build step is needed.
 
-```
-python -m http.server 4173
-```
+Alternatively, run `python -m http.server 4173` in this directory and open http://localhost:4173.
 
-Then visit http://localhost:4173.
+## Site structure
 
-## What is included
-- Original corporate logo unchanged, verified blue/turquoise brand colours, and a new self-hosted Manrope typography system.
-- An editorial homepage with a keyboard-operable service explorer, complete capability index and distinct EclipseSME software feature.
-- Three service practice chapters with native expandable details; a company/leadership narrative; searchable FAQ; contact intake studio; documentary privacy notice.
-- All eight verified offerings, all 14 FAQ topics, canonical/social metadata and legacy privacy/cookie URLs preserved.
-- Progressive enhancement: all explorer content, navigation and native disclosures work without JavaScript.
-- Safe contact simulation, production fail-closed configuration, optional reCAPTCHA and consent-gated GA4 preparation.
-- No card grid, stock photograph, stacked-layer illustration, gradients, framework or runtime asset services.
+- Home: company positioning, three service summaries, EclipseSME product section, company introduction and contact link.
+- Services: consulting, engineering/modernization, fractional leadership and software, plus concise audit readiness, security and coaching support.
+- Company: insurance experience, audiences and engagement options.
+- Contact: existing inquiry form and verified direct email address.
+- Common questions: six short answers, linked from the footer.
+- Cookies & privacy: existing consent foundations and compatibility URLs.
+
+Navigation focuses on Services, Company, EclipseSME and Contact. There is no interactive service explorer, abstract capability diagram or FAQ search. The historical `review/homepage-concepts` folder is unchanged and is not part of the active website.
 
 ## Maintain
-Shared templates: `scripts/build.py`; verified page metadata, offerings and FAQ content: `scripts/content.json`; contact/privacy content: `scripts/partials/*.tpl`. Run `python scripts/build.py` after editing; generated HTML is checked in and directly browsable. Styles and classic scripts live in `assets/`. Public form and analytics configuration lives in `assets/config.js`; never add private credentials.
 
-Checks:
+Templates live in `scripts/build.py`; concise page metadata, services and questions live in `scripts/content.json`. Contact and privacy markup live in `scripts/partials/`. After editing these sources, run `python scripts/build.py` and commit the generated HTML as well. The generated root `index.html` is the actual website, not a concept.
 
-```
+Styles and scripts live in `assets/`. Public form/analytics configuration remains in `assets/config.js`. The form currently simulates submissions locally; live delivery requires EclipseIQ's own Formspree endpoint. Optional analytics remains unconfigured and consent-gated. No private keys belong in these files.
+
+## Verification
+
+```sh
 python scripts/check_static.py
 node --check assets/config.js
 node --check assets/site.js
 node --check assets/consent.js
 ```
 
-Browser checks need Playwright and Chromium: start the local server, then run `python scripts/check_browser.py`. Providers are mocked, so no real inquiries or analytics events are sent. Optional share-card regeneration uses `python scripts/social.py`, also with Playwright/Chromium; it composes the unmodified actual logo and local fonts. These tools are not needed to view or host the site.
+For browser checks, start the local server and run `python scripts/check_browser.py`. Requires the existing Playwright and Chromium environment. The suite intercepts external providers; it never sends real inquiries or analytics. `ECLIPSEIQ_TEST_URL` can select another local port. Screenshots are saved to ignored `.test-results/`.
 
-## Evidence and launch
-Start with `docs/creative-direction.md` for the critical assessment, reference research and new design system. Use `docs/live-audit-and-gap-analysis.md` for the live crawl, exact brand values, content inventory and comparison with the first redesign. `docs/live-crawl-evidence.json` records request results and source-file hashes; `docs/assets.md` records asset provenance.
-
-See `docs/configuration.md`, `docs/redirects.md`, `docs/validation.md` and `docs/launch.md`. EclipseIQ's own Formspree endpoint, optional public CAPTCHA key and optional GA4 ID remain unconfigured. The original corporate logo is now included; no temporary branding remains.
-
-This feature branch is for local review. Nothing is deployed, WordPress remains untouched and the EclipseSME repository is unchanged.
+See `docs/creative-direction.md`, `docs/assets.md`, `docs/validation.md` and `docs/configuration.md`. This branch is for local review. No deployment or live WordPress changes are included.

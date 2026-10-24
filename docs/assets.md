@@ -1,30 +1,11 @@
-# Asset provenance and branding
+# Current website assets
 
-## Corporate logo
+- `assets/eclipseiq-logo-original.png`: unchanged original 202×88 logo from https://eclipseiq.ca/wp-content/uploads/2025/04/EclipseIQ-Logo-202-x-88-px.png. SHA-256 `e9edbbf8165884a95bdbf18d2a7007b911fbaf35306d39c65a42bb1036b4b9fd`. Displayed below intrinsic size, on white, without cropping, inversion or recolouring.
+- `assets/insurance-planning.png`: unchanged original 800×534 corporate photograph from https://eclipseiq.ca/wp-content/uploads/2024/09/EIS_BrainStorming.png. Used for planning context on Home and Company, not as a staff portrait or case study. The local bytes match the previously downloaded original asset.
+- `assets/fonts/manrope.woff2`: existing self-hosted Manrope variable font. SIL Open Font License remains in `assets/fonts/OFL-Manrope.txt`. No external font service.
+- `assets/social.png`: refreshed corporate sharing image using the actual logo and concise company positioning. Reproduce using `scripts/social.py` with Playwright and Chromium.
+- Small original inline SVG icons identify consulting, engineering, leadership and software; they are supplementary to visible text. No abstract diagrams or product mock interfaces in the active site.
 
-`assets/eclipseiq-logo-original.png` is the original 202×88 PNG, downloaded without transformation from:
-https://eclipseiq.ca/wp-content/uploads/2025/04/EclipseIQ-Logo-202-x-88-px.png
+Established palette: deep blue `#023047`, turquoise `#219ebc` and original logo blue `#13a8ff`. Supporting darker blue `#08769a`, muted text and pale surfaces maintain legibility.
 
-Verified against WordPress media record 183. SHA-256:
-`e9edbbf8165884a95bdbf18d2a7007b911fbaf35306d39c65a42bb1036b4b9fd`
-
-The actual black/blue lettering, blue symbol, grey tagline and white background are preserved. It is displayed at or below original dimensions in header/footer and at intrinsic size in the sharing card. Favicon references the same original PNG, rather than inventing a substitute mark. No inversion, tracing, cropping, recolouring or recreated logo.
-
-## Brand colours
-
-Live homepage CSS explicitly uses deep blue `#023047`, turquoise `#219ebc`, white `#FFFFFF` and dark `#111111`. Original-logo opaque pixel counts identify its blue as `#13A8FF`. These values form the redesign's palette. Supporting accessible text blues (`#07688b`, `#087bad`) and pale surfaces complement these colours. The brightest original blue and turquoise are accents, not body text on white where contrast would be insufficient.
-
-## Typography
-
-The current creative direction uses a self-hosted variable Manrope font (weights 200–800), downloaded from:
-https://cdn.jsdelivr.net/npm/@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2
-
-SIL Open Font License included at `assets/fonts/OFL-Manrope.txt`. No runtime external font requests. The source website's IBM Plex fonts were verified during the live audit but are no longer used or shipped. Typography is a new design decision, not a claim about the original site.
-
-## Retired imagery and artwork
-
-The original site's EIS_BrainStorming photograph and historical EclipseSME landing screenshot were reviewed in the live audit. Neither is shipped in the new direction. The photo-based about section, stacked-layer CSS artwork, icon cards and all gradients were removed. Their provenance remains in the historical audit, not as current design guidance.
-
-## Sharing image and icons
-
-`assets/social.png` uses the new editorial typography and unchanged original logo. Generate with `scripts/social.py` using locally fulfilled font/logo requests. Simple original inline SVG arrow, menu and disclosure icons support navigation; no third-party icon package or decorative illustrations.
+Historical concept assets in `review/` are unchanged and are not dependencies of the active website.

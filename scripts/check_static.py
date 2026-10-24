@@ -20,6 +20,7 @@ class Page(HTMLParser):
    if k in a:self.refs.append(a[k])
 pages={}
 for f in ROOT.rglob('*.html'):
+ if 'review' in f.relative_to(ROOT).parts:continue
  p=Page();p.feed(f.read_text());pages[f]=p
  assert len(p.ids)==len(set(p.ids)),f'Duplicate IDs: {f}'
  assert p.h1==1 and p.lang and p.has_title and len(p.canonical)==1 and len(p.descriptions)==1,f'Metadata: {f}'

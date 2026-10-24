@@ -1,4 +1,4 @@
-> Source facts and crawl evidence remain current for this work. The visual direction and image/font choices described in this historical audit are superseded by [creative-direction.md](creative-direction.md) and [assets.md](assets.md).
+> Historical audit. Source facts were rechecked for the current revision. Content-retention and visual decisions below are superseded by [creative-direction.md](creative-direction.md) and [assets.md](assets.md); in particular, the current site intentionally consolidates the original offerings and FAQ.
 
 # Live website audit and redesign comparison
 

@@ -1,34 +1,33 @@
-# Creative reset: connected thinking, practical engineering
+# Current direction: a concise corporate website
 
-## Critique of the prior iteration
+This document supersedes previous visual directions. The actual website files, including root `index.html`, are the review surface. Earlier concepts remain historical and unchanged.
 
-The live audit corrected facts and branding, but design fidelity was confused with design continuity. The prior version retained the WordPress site's opening pitch, three introductory features, icon-card service grid, image/about split and closing CTA rhythm. Condensed type, pale-blue backgrounds and a tilted layer illustration made the composition feel like a decorated version of the same template. Eight identical service tiles flattened hierarchy; almost every section asked for equal attention. The original stock photograph and repetitive section spacing further weakened distinction.
+## Content decisions
 
-The next revision retains the original logo, exact brand blue/turquoise, verified offerings and corporate/product distinction. It does not retain the prior page structures, condensed display type, stock-photo treatment, generic gradients or service cards.
+Re-reviewed all six pages listed in the live WordPress page sitemap: home, contact, FAQ, privacy policy and the two cookie policy pages. The live site has no separate Services or Company page. Read the live homepage and FAQ for the insurance software, consulting, modernization, custom development, data migration and fractional leadership capabilities. The live privacy page verifies `support@eclipseiq.ca` as a contact address. No customer claims, credentials, metrics or new services are added.
 
-## Research and interpretation
+Primary sources:
+- https://eclipseiq.ca/
+- https://eclipseiq.ca/faq/
+- https://eclipseiq.ca/contact/
+- https://eclipseiq.ca/privacy-policy/
+- https://eclipseiq.ca/cookie-policy-ca/
+- https://eclipseiq.ca/cookie-policy-ca-2/
+- https://eclipseiq.ca/page-sitemap.xml
+- https://eclipsesme.com/
 
-Reviewed first-party presentation and navigation at https://linear.app/, https://vercel.com/ and https://work.co/. A public screenshot of Linear's current homepage and an explicitly historical Work & Co reference were also available through image search. https://www.palantir.com/ yielded insufficient page content, so it was not treated as a substantive reference. Browser/network restrictions prevent claiming a complete current visual audit of all reference sites.
+The source site's six pages were fetched successfully over HTTPS. The sitemap also references two images; these are media, not additional pages. Website research connector access to the privacy URLs was unavailable, so the successful direct HTTPS reads were used instead.
 
-Useful principles rather than copied designs:
-- Linear: establish a clear organizing idea and use product/workflow substance to support it. Disciplined hierarchy and restraint are more valuable than ornamental graphics.
-- Vercel: connect capabilities to what a visitor needs to accomplish; organize technical depth into a coherent system rather than an undifferentiated feature list.
-- Work & Co: use editorial scale, direct language and clear prioritization. Give the main idea room instead of filling every region.
+Home leads with insurance technology, software, consulting and senior leadership. Three brief service summaries link to a compact Services page. EclipseSME is one corporate product section rather than the whole company story. Company background and engagement context are shortened. The main navigation has four destinations; six practical FAQ answers are a footer resource instead of a primary destination. Existing legal and compatibility URLs remain intact.
 
-No external wording, brand marks, screenshots, layouts or CSS imported. No customer logos, project results, platform screenshots or metrics invented to imitate enterprise proof.
+The eight original service areas are consolidated, not discarded: consulting includes the Totality Assessment; engineering includes modernization, integrations and migration; fractional leadership includes coaching; software includes EclipseSME and implementation. Audit readiness, security reviews and team development remain concise supporting services. Implementation promises and repetitive platform pitches are removed.
 
-## New visual system
+## Visual decisions
 
-Large, uncondensed Manrope display typography; deep ink/navy, verified blue/turquoise, off-white paper and muted steel. Flat colour, fine boundaries and generous negative space. The actual original logo remains unmodified on a white field. Blue is a purposeful emphasis and navigational cue, not an all-purpose gradient.
+A white logo header; a soft blue introduction with the original corporate planning photograph; moderate headings; simple open service columns; a navy product band; and a brief company/contact finish. The live photograph provides business context without implying that the people depicted are EclipseIQ employees. There are no abstract diagrams, oversized type, interactive service tabs or ornamental animation.
 
-Homepage: an editorial masthead rather than text plus illustration; a concise company thesis; a keyboard-operable explorer for modernization, leadership and software; a compact index of the eight factual offerings; a distinct EclipseSME software feature; an integrated contact invitation and useful footer. The explorer explains the relationship between operational needs and technical capabilities and links directly to the relevant service details. It is not a simulated product UI or a performance claim.
+EclipseSME is a reference for consistency, clear software descriptions and professional execution. Its design, stylesheet and repository are not copied or modified. The corporate site uses EclipseIQ's actual logo and established deep blue/turquoise family.
 
-Services: practice chapters with a persistent section index and accessible expandable service details. All eight offerings remain substantive, discoverable and indexable. About: an industry/engineering narrative with a deliberate executive-role composition, not a stock-photo grid. FAQ: a focused reference layout. Contact: a compact intake studio rather than another marketing hero. Privacy: a readable document with a contents rail.
+## Behaviour retained
 
-## Interaction principles
-
-No autoplay, scroll-jacking, animated backgrounds, parallax or decorative counters. Service exploration changes substantive copy and links. Native details reveal service/FAQ depth. Mobile navigation, focus states, direct-link disclosure, and reduced-motion behavior are functional. All content and links remain usable without JavaScript; no-JS pages expose all explorer content.
-
-## Review criteria
-
-Different composition and typography at first glance; no old card/gradient/stacked-layer motifs; original logo bytes unchanged; meaningful corporate/product separation; all verified services retained; consistent 320px–desktop layouts; keyboard and no-JS usability; no analytics before consent; safe unconfigured production form. No deployment or WordPress changes.
+Original inquiry validation, email/phone/SMS preferences, honeypot, optional CAPTCHA, local simulation, provider response handling and failure states remain. Optional analytics still requires explicit consent and configured analytics identity. Privacy controls, canonical metadata, structured Organization data, sitemap, legacy policy URLs and relative local-file paths remain. Direct email is available independently of form configuration.
