@@ -4,6 +4,8 @@
 - `assets/insurance-planning.png`: unchanged original 800×534 corporate photograph from https://eclipseiq.ca/wp-content/uploads/2024/09/EIS_BrainStorming.png. Used for planning context on Home and Company, not as a staff portrait or case study. The local bytes match the previously downloaded original asset.
 - `assets/fonts/manrope.woff2`: existing self-hosted Manrope variable font. SIL Open Font License remains in `assets/fonts/OFL-Manrope.txt`. No external font service.
 - `assets/social.png`: refreshed corporate sharing image using the actual logo and concise company positioning. Reproduce using `scripts/social.py` with Playwright and Chromium.
+- `assets/insurance-engineering.png` and `assets/insurance-leadership.png`: original AI-generated editorial images commissioned for this visual revision. They illustrate software engineering and collaborative leadership, respectively. They do not depict EclipseIQ employees, offices, customers or actual EclipseSME screens. The engineering scene is identified as illustrative in the hero image alt text; repeated service images are supplementary to the approved visible text.
+- `assets/insurance-documents.svg`: original vector illustration of documents, checks and reporting. It is a supporting visual, not a product interface or a claim about customer data.
 - Small original inline SVG icons identify consulting, engineering, leadership and software; they are supplementary to visible text. No abstract diagrams or product mock interfaces in the active site.
 
 Established palette: deep blue `#023047`, turquoise `#219ebc` and original logo blue `#13a8ff`. Supporting darker blue `#08769a`, muted text and pale surfaces maintain legibility.

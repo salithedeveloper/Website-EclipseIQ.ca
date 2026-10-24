@@ -24,9 +24,18 @@ The eight original service areas are consolidated, not discarded: consulting inc
 
 ## Visual decisions
 
-A white logo header; a soft blue introduction with the original corporate planning photograph; moderate headings; simple open service columns; a navy product band; and a brief company/contact finish. The live photograph provides business context without implying that the people depicted are EclipseIQ employees. There are no abstract diagrams, oversized type, interactive service tabs or ornamental animation.
+The approved content is unchanged. This visual-only revision adds a dark navy photographic hero with a turquoise caption inset; photographic service panels with larger click targets; a pale blue product section with original document artwork; an editorial company composition; and consistent dark/light treatments on the interior pages. Headings remain moderate. On mobile, service photography becomes a compact thumbnail alongside each existing description. No new sections, copy, service claims or page destinations are introduced.
 
-EclipseSME is a reference for consistency, clear software descriptions and professional execution. Its design, stylesheet and repository are not copied or modified. The corporate site uses EclipseIQ's actual logo and established deep blue/turquoise family.
+The real corporate logo and blue/turquoise palette remain. Original generated editorial images illustrate engineering and planning without claiming to show EclipseIQ employees or an actual product interface. See `assets.md` for provenance.
+
+Real visual references reviewed for this revision:
+
+- [EclipseSME](https://eclipsesme.com/): consistent typography, dark/light contrast and substantial visual presentation. Corporate navigation and service emphasis remain specific to EclipseIQ.
+- [Endava](https://www.endava.com/): a stronger dark hero and confident enterprise presentation. The [secondary homepage screenshot](https://group107.com/blog/enterprise-software-development-companies/) informed contrast and composition, without adopting its abstract graphics or oversized slogan.
+- [Thoughtworks](https://www.thoughtworks.com/): imagery with a clear technology context and visual variety between capabilities. [Screenshot references](https://blog.naitive.cloud/generative-ai-in-legacy-workflows-training-guide/) were used for visual research, not as source assets.
+- [EPAM visual references](https://www.wisemonk.io/de-de/blogs/software-development-outsourcing-companies): integrated hero imagery and a restrained navigation system. The source is a secondary screenshot, not a claim about the current live design.
+
+Primary sites were read for context; secondary screenshots provided visual references and may show earlier states. No code, copy, logos or images were copied from the inspiration sites. EclipseSME remains a visual-quality benchmark, not the corporate site's design template. The existing EclipseSME repository is unchanged.
 
 ## Behaviour retained
 
