@@ -1,0 +1,127 @@
+{
+  "browser": "Chromium",
+  "checks": [
+    {
+      "concept": 1,
+      "width": 1440,
+      "http": 200,
+      "overflow": false,
+      "images": "loaded",
+      "navigation": "passed"
+    },
+    {
+      "concept": 1,
+      "width": 1024,
+      "http": 200,
+      "overflow": false,
+      "images": "loaded",
+      "navigation": "passed"
+    },
+    {
+      "concept": 1,
+      "width": 768,
+      "http": 200,
+      "overflow": false,
+      "images": "loaded",
+      "navigation": "passed"
+    },
+    {
+      "concept": 1,
+      "width": 390,
+      "http": 200,
+      "overflow": false,
+      "images": "loaded",
+      "navigation": "passed"
+    },
+    {
+      "concept": 1,
+      "width": 320,
+      "http": 200,
+      "overflow": false,
+      "images": "loaded",
+      "navigation": "passed"
+    },
+    {
+      "concept": 2,
+      "width": 1440,
+      "http": 200,
+      "overflow": false,
+      "images": "loaded",
+      "navigation": "passed"
+    },
+    {
+      "concept": 2,
+      "width": 1024,
+      "http": 200,
+      "overflow": false,
+      "images": "loaded",
+      "navigation": "passed"
+    },
+    {
+      "concept": 2,
+      "width": 768,
+      "http": 200,
+      "overflow": false,
+      "images": "loaded",
+      "navigation": "passed"
+    },
+    {
+      "concept": 2,
+      "width": 390,
+      "http": 200,
+      "overflow": false,
+      "images": "loaded",
+      "navigation": "passed"
+    },
+    {
+      "concept": 2,
+      "width": 320,
+      "http": 200,
+      "overflow": false,
+      "images": "loaded",
+      "navigation": "passed"
+    },
+    {
+      "concept": 3,
+      "width": 1440,
+      "http": 200,
+      "overflow": false,
+      "images": "loaded",
+      "navigation": "passed"
+    },
+    {
+      "concept": 3,
+      "width": 1024,
+      "http": 200,
+      "overflow": false,
+      "images": "loaded",
+      "navigation": "passed"
+    },
+    {
+      "concept": 3,
+      "width": 768,
+      "http": 200,
+      "overflow": false,
+      "images": "loaded",
+      "navigation": "passed"
+    },
+    {
+      "concept": 3,
+      "width": 390,
+      "http": 200,
+      "overflow": false,
+      "images": "loaded",
+      "navigation": "passed"
+    },
+    {
+      "concept": 3,
+      "width": 320,
+      "http": 200,
+      "overflow": false,
+      "images": "loaded",
+      "navigation": "passed"
+    }
+  ],
+  "review": "comparison selectors, images and responsive layout passed",
+  "page_errors": []
+}
