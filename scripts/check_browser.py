@@ -1,0 +1,136 @@
+#!/usr/bin/env python3
+"""Behavior checks with entirely intercepted provider requests. No real submissions.
+Requires Playwright and Chromium. Start python -m http.server 4173 first.
+"""
+from pathlib import Path
+from urllib.parse import urlparse, unquote
+from playwright.sync_api import sync_playwright
+import json, re, time, os
+ROOT=Path(__file__).resolve().parents[1]
+BASE=os.environ.get('ECLIPSEIQ_TEST_URL','http://127.0.0.1:4173')
+CHROME=os.environ.get('ECLIPSEIQ_CHROMIUM','/usr/bin/chromium')
+RESULTS=ROOT/'.test-results'; RESULTS.mkdir(exist_ok=True)
+count=0
+
+def ok(condition,label):
+ global count
+ assert condition,label
+ count+=1;print('PASS:',label)
+
+def fill(page):
+ page.locator('#name').fill('  Test Reviewer  ')
+ page.locator('#email').fill('reviewer@example.test')
+ page.locator('#company').fill('Test Organization')
+ page.locator('#interest').select_option('consulting')
+ page.locator('#message').fill('A test inquiry about system integration.')
+
+def configure(ctx, mode='production', endpoint='https://formspree.io/f/TESTONLY', result='success', ga='', captcha='', required=False, response='success'):
+ requests=[];errors=[]
+ config={'form':{'mode':mode,'endpoint':endpoint,'developmentResult':result,'requireRecaptcha':required,'recaptchaSiteKey':captcha},'analytics':{'measurementId':ga}}
+ def handler(route):
+  u=urlparse(route.request.url)
+  if u.hostname in ['eclipseiq.ca','127.0.0.1','localhost']:
+   if u.path.endswith('/assets/config.js') or u.path=='/assets/config.js':
+    route.fulfill(content_type='text/javascript',body='window.ECLIPSEIQ_CONFIG='+json.dumps(config));return
+   path=(ROOT/unquote(u.path).lstrip('/')).resolve()
+   if not path.is_relative_to(ROOT):route.abort();return
+   if path.is_dir():path/= 'index.html'
+   if path.exists():
+    mime={'.html':'text/html','.css':'text/css','.js':'text/javascript','.png':'image/png','.svg':'image/svg+xml'}.get(path.suffix,'text/plain')
+    route.fulfill(content_type=mime,body=path.read_bytes());return
+   route.fulfill(status=404,body='not found');return
+  requests.append(route.request)
+  if u.hostname=='formspree.io':
+   if response=='success':route.fulfill(content_type='application/json',body='{"ok":true}')
+   elif response=='ambiguous':route.fulfill(content_type='application/json',body='{}')
+   elif response=='malformed':route.fulfill(content_type='text/plain',body='broken')
+   elif response=='rate':route.fulfill(status=429,content_type='application/json',body='{"ok":false}')
+   elif response=='network':route.abort('failed')
+   return
+  if u.hostname=='www.googletagmanager.com':route.fulfill(content_type='text/javascript',body='/* GA provider stub: never sends requests */');return
+  if u.hostname=='www.google.com':route.abort('failed');return
+  errors.append(route.request.url);route.abort()
+ ctx.route('**/*',handler)
+ return requests,errors
+
+with sync_playwright() as p:
+ browser=p.chromium.launch(executable_path=CHROME,headless=True,args=['--no-sandbox'])
+ # Real static server: links, rendering and runtime errors at all sizes.
+ ctx=browser.new_context();page=ctx.new_page();errs=[];page.on('pageerror',lambda e:errs.append(str(e)))
+ paths=['/','/services/index.html','/about/index.html','/faq/index.html','/contact/index.html','/privacy/index.html','/404.html']
+ for width in [1440,1024,768,390,320]:
+  page.set_viewport_size({'width':width,'height':900})
+  for path in paths:
+   page.goto(BASE+path)
+   ok(page.locator('h1').count()==1,f'{width}px {path} loads')
+   ok(page.evaluate('document.documentElement.scrollWidth <= innerWidth'),f'{width}px {path} no horizontal overflow')
+   if width<=850:
+    page.get_by_role('button',name=re.compile('Menu')).click()
+    ok(page.locator('#navigation').is_visible(),'mobile navigation opens')
+    page.keyboard.press('Escape')
+    ok(not page.locator('#navigation').is_visible(),'Escape closes mobile navigation')
+   else:ok(not page.locator('.menu-toggle').is_visible(),'desktop menu toggle hidden')
+  page.goto(BASE+'/')
+  page.locator('[data-cookie-choice="rejected"]').click() if page.locator('#cookie-banner').is_visible() else None
+  if width in [1440,390]:page.screenshot(path=str(RESULTS/f'home-{width}.png'),full_page=True)
+ ok(not errs,'no page JavaScript errors')
+ page.goto(BASE+'/faq/index.html');page.locator('summary').first.click();ok(page.locator('details').first.get_attribute('open') is not None,'FAQ expands')
+ page.goto(BASE+'/contact/index.html');fill(page)
+ page.get_by_role('button',name='Send inquiry').click();page.wait_for_timeout(500)
+ ok('SIMULATED SUCCESS' in page.locator('#form-status').inner_text(),'local success explicitly simulated')
+ ok(page.locator('#name').input_value()=='Test Reviewer','required text trimmed; simulated entries preserved')
+ ctx.close()
+ # Production hostname: all pages/config/providers fulfilled from disk or stubs.
+ ctx=browser.new_context();req,err=configure(ctx,mode='development');page=ctx.new_page();page.goto('https://eclipseiq.ca/contact/index.html')
+ ok(page.locator('[type=submit]').is_disabled(),'public development mode fails closed')
+ ok(not req,'no provider requests from unconfigured production preview');ctx.close()
+ for kw,label in [({'endpoint':''},'empty endpoint'),({'mode':'invalid'},'invalid mode'),({'required':True},'missing required CAPTCHA key')]:
+  ctx=browser.new_context();configure(ctx,**kw);page=ctx.new_page();page.goto('https://eclipseiq.ca/contact/index.html');ok(page.locator('[type=submit]').is_disabled(),label+' fails closed');ctx.close()
+ for response in ['success','ambiguous','malformed','rate','network']:
+  ctx=browser.new_context();req,err=configure(ctx,response=response);page=ctx.new_page();page.goto('https://eclipseiq.ca/contact/index.html')
+  page.locator('[type=submit]').click();ok(not req,'invalid required fields block request')
+  fill(page);page.get_by_label('Phone call',exact=True).check();page.locator('[type=submit]').click();ok(not req,'phone selection requires phone number')
+  page.locator('#phone').fill('+1 555 0100');page.locator('[type=submit]').click();page.wait_for_timeout(200)
+  state=page.locator('#form-status').get_attribute('data-state')
+  ok(state==('success' if response=='success' else 'error'),'provider '+response+' has correct feedback')
+  ok(len(req)==1,'one POST attempt, no duplicate provider calls')
+  if response=='success':ok(page.locator('[type=submit]').is_disabled() and page.locator('#name').input_value()=='','confirmed success resets and locks form')
+  else:
+   ok(page.locator('#name').input_value()=='Test Reviewer','failure preserves entered data')
+   page.locator('[type=submit]').click();ok(len(req)==1,'retry cooldown prevents immediate resend')
+  ok(not err,'no unexpected external traffic');ctx.close()
+ ctx=browser.new_context();req,err=configure(ctx,captcha='TEST-PUBLIC-KEY',required=True);page=ctx.new_page();page.goto('https://eclipseiq.ca/contact/index.html');fill(page);page.locator('[type=submit]').click()
+ ok(not any('formspree' in x.url for x in req),'failed CAPTCHA load prevents delivery');ctx.close()
+ ctx=browser.new_context();req,err=configure(ctx,mode='development',result='error');page=ctx.new_page();page.goto(BASE+'/contact/index.html');fill(page);page.locator('[type=submit]').click();page.wait_for_timeout(500)
+ ok('SIMULATED ERROR' in page.locator('#form-status').inner_text() and not req,'local simulated error sends no requests');ctx.close()
+ # Consent with empty ID: zero external requests even after acceptance.
+ ctx=browser.new_context();req,err=configure(ctx,endpoint='');page=ctx.new_page();page.goto('https://eclipseiq.ca/')
+ ok(not req,'no external requests before consent')
+ page.locator('[data-cookie-choice="accepted"]').click();ok(not req,'empty GA ID stays inactive after acceptance');ctx.close()
+ # Configured GA test ID: load only upon consent, sanitized page event, withdraw.
+ ctx=browser.new_context();req,err=configure(ctx,ga='G-TESTONLY');page=ctx.new_page();page.goto('https://eclipseiq.ca/contact/index.html?private=not-for-analytics#sensitive')
+ ok(not req,'configured analytics makes no pre-consent requests')
+ page.locator('[data-cookie-choice="rejected"]').click();page.reload();ok(not page.locator('#cookie-banner').is_visible() and not req,'rejection persists across reload with no tracking')
+ page.locator('.cookie-preferences').click();ok(page.locator('[data-cookie-choice="rejected"]').evaluate('(e)=>e===document.activeElement'),'preferences focus previous choice')
+ page.locator('[data-cookie-choice="accepted"]').click();page.wait_for_timeout(100)
+ ok(len(req)==1 and 'googletagmanager.com' in req[0].url,'accept loads only mocked GA script once')
+ events=page.evaluate('dataLayer.map(x=>Array.from(x))')
+ event=[e for e in events if e[0]=='event'][0]
+ ok(event[2]['page_location']=='https://eclipseiq.ca/contact/' and event[2]['page_referrer']=='','analytics event omits query/fragment/referrer')
+ page.context.add_cookies([{'name':'_ga','value':'test','domain':'eclipseiq.ca','path':'/'}])
+ page.locator('.cookie-preferences').click();page.locator('[data-cookie-choice="rejected"]').click();page.wait_for_load_state();page.wait_for_timeout(150)
+ ok(len(req)==1,'withdrawal reload does not restart analytics')
+ ok(not any(c['name']=='_ga' for c in ctx.cookies()),'withdrawal clears accessible GA cookie')
+ ctx.close()
+ # Expired/future/malformed consent must re-prompt without collecting.
+ for saved in [{'choice':'accepted','at':1},{'choice':'accepted','at':99999999999999},{'choice':'bogus','at':int(time.time()*1000)}]:
+  ctx=browser.new_context();req,err=configure(ctx,ga='G-TESTONLY');ctx.add_init_script('localStorage.setItem("eclipseiq.analytics-consent.v1",'+json.dumps(json.dumps(saved))+')');page=ctx.new_page();page.goto('https://eclipseiq.ca/')
+  ok(page.locator('#cookie-banner').is_visible() and not req,'invalid/expired consent fails closed');ctx.close()
+ # Cross-tab revoke.
+ ctx=browser.new_context();req,err=configure(ctx,ga='G-TESTONLY');a=ctx.new_page();a.goto('https://eclipseiq.ca/');a.locator('[data-cookie-choice="accepted"]').click();b=ctx.new_page();b.goto('https://eclipseiq.ca/about/index.html');b.locator('.cookie-preferences').click();b.locator('[data-cookie-choice="rejected"]').click();a.wait_for_timeout(250)
+ ok(a.evaluate('JSON.parse(localStorage.getItem("eclipseiq.analytics-consent.v1")).choice')=='rejected','cross-tab rejection synchronized')
+ ok(a.locator('[data-optional-analytics]').count()==0,'cross-tab rejection unloads analytics');ctx.close()
+ # Storage blocked: no automatic consent; explicit page choice still works.
+ ctx=browser.new_context();req,err=configure(ctx,ga='G-TESTONLY');ctx.add_init_script('Storage.prototype.getItem=()=>{throw Error("blocked")}; Storage.prototype.setItem=()=>{throw Error("blocked")};');page=ctx.new_page();page.goto('https://eclipseiq.ca/');ok(page.locator('#cookie-banner').is_visible() and not req,'blocked storage defaults to no tracking');page.locator('[data-cookie-choice="rejected"]').click();ok(not req,'blocked storage rejection is respected');ctx.close()
+ browser.close()
+print(f'COMPLETE: {count} assertions. Screenshots: {RESULTS}')
