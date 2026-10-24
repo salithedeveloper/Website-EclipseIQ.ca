@@ -1,23 +1,20 @@
-# Validation: products-and-services website
-
-## Scope
-
-Eleven active HTML files: Home, Products, Our Offerings, Company, FAQ, Contact, canonical privacy, three compatibility privacy/cookie URLs and 404. Historical concepts are excluded from production checks.
+# Validation: enterprise visual refinement
 
 ## Completed checks
 
-- Static checks: unique IDs, one H1, page titles, descriptions and canonical URLs, local asset/link existence, fragment targets, external-link safety, public email absence, sitemap, original-logo hash and legacy policy aliases.
-- JavaScript syntax checks for config, site and consent scripts.
-- Chromium browser suite: **284 assertions passed** across 1440, 1024, 768, 390 and 320px. All active pages loaded without horizontal overflow. Desktop/mobile navigation, Escape behaviour, current-page Products navigation, product/demo discovery, exact offering order and grouped FAQ counts were verified.
-- Catalogue growth regression test in a disposable directory: an unpublished fixture is absent from Home and Products; explicitly publishing it renders a second feature through the existing layout, without touching production files.
-- Products check: only one product is published, EclipseSME. Homepage shows the four requested offerings in order. FAQ and Products are visible in the primary navigation; the homepage includes three expandable FAQ answers.
-- Navigation and native disclosures work without JavaScript, including mobile layouts. Reduced-motion preference disables smooth scrolling.
-- Form tests retain required-field checks, trimming, contact preferences, conditional phone, honeypot, CAPTCHA failure, local simulation, provider success/failure and duplicate/retry prevention. Unconfigured production and forced submit events cannot send a request or report success.
-- Cookie/analytics tests retain no pre-consent requests, stored rejection, explicit acceptance, sanitized page data, withdrawal, expiry, invalid state, cross-tab rejection and blocked storage handling. All providers are intercepted; no real inquiry or analytics is sent.
-- Desktop/mobile homepage screenshots and primary interior-page screenshots inspected. Captures remain in ignored `.test-results/`, not a new review folder.
+- **290 Chromium browser assertions passed** across 1440, 1024, 768, 390 and 320px. All 11 active pages loaded without horizontal overflow. Mobile menu, Escape, desktop navigation, no-JavaScript navigation, native FAQ disclosures and reduced motion were verified.
+- New navigation destinations are Products, Services, About, FAQ and Contact. Both homepage business-area entry points open their correct destination. The four offerings remain in the required order; implementation/integration of third-party software is explicit.
+- All homepage images decoded successfully, including lazy assets. The self-hosted IBM Plex Sans font loaded successfully. Desktop/mobile full-page screenshots were inspected for Home, Products, Services, About, FAQ and Contact.
+- The product catalogue still publishes only EclipseSME. The disposable catalogue regression test confirms draft products stay absent and an explicitly published second product uses the same shared layout. No unreleased product is named publicly.
+- Static checks cover all 11 active HTML files: one H1, unique IDs, titles/descriptions/canonicals, local references/fragments, external-link security, public email absence, sitemap, policy aliases and unchanged original-logo hash.
+- JavaScript syntax checks pass for config, site and consent scripts. The form processor, configuration, contact controls and consent script remain unchanged.
+- Form tests retain required fields, trimming, email/phone/SMS preferences, conditional phone validation, honeypot, optional CAPTCHA failure, local simulated success/error, mocked production success/failure and retry/duplicate prevention. Unconfigured production and forced submit events cannot send a request or report success.
+- Consent tests retain no pre-consent analytics, persisted rejection, explicit acceptance, sanitized page data, withdrawal, expiry, invalid state, cross-tab changes and blocked browser storage. All provider traffic was intercepted: no real inquiry or analytics was sent.
 
-The source and generated pages use explicit relative paths for direct local opening of root `index.html`. Browser QA uses a local HTTP server because this execution environment restricts direct browser `file:` navigation.
+## Review and limits
 
-## Publication limits
+The actual root `index.html` remains directly browsable using explicit relative local paths. Browser QA uses a local HTTP server because this execution environment restricts direct `file:` browser navigation. Captures remain in ignored `.test-results/`; no review folder was created.
 
-Live Formspree delivery awaits a dedicated EclipseIQ endpoint. Optional analytics remains unconfigured. No deployment, live WordPress modification or EclipseSME repository change is included.
+New editorial imagery is illustrative. Product images are explicitly labelled as concepts, not live application screenshots. They do not imply customer results, employee identities or actual office premises.
+
+Live Formspree delivery still awaits a dedicated EclipseIQ endpoint. Optional analytics remains unconfigured. Nothing is deployed; WordPress and the EclipseSME repository remain unchanged.

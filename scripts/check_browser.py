@@ -36,7 +36,7 @@ def configure(ctx, mode='production', endpoint='https://formspree.io/f/TESTONLY'
    if not path.is_relative_to(ROOT):route.abort();return
    if path.is_dir():path/= 'index.html'
    if path.exists():
-    mime={'.html':'text/html','.css':'text/css','.js':'text/javascript','.png':'image/png','.svg':'image/svg+xml','.woff2':'font/woff2'}.get(path.suffix,'text/plain')
+    mime={'.html':'text/html','.css':'text/css','.js':'text/javascript','.png':'image/png','.webp':'image/webp','.svg':'image/svg+xml','.woff2':'font/woff2'}.get(path.suffix,'text/plain')
     route.fulfill(content_type=mime,body=path.read_bytes());return
    route.fulfill(status=404,body='not found');return
   requests.append(route.request)
@@ -87,7 +87,19 @@ with sync_playwright() as p:
  ctx.close()
  # Concise corporate content and native disclosure behaviour.
  ctx=browser.new_context();page=ctx.new_page();page.goto(BASE+'/')
- ok(page.locator('.offerings-composition article h3').all_text_contents()==['Insurance Software','Insurance Software Implementation & Modernization','Insurance Technology Consulting','Fractional CIO / COO / CTO Leadership'],'four offerings in the requested order')
+ page.locator('[data-cookie-choice="rejected"]').click() if page.locator('#cookie-banner').is_visible() else None
+ ok(page.locator('#navigation a').all_text_contents()==['Products','Services','About','FAQ','Contact'],'navigation exposes the five requested destinations')
+ ok(page.locator('.business-path').count()==2,'both business areas have dedicated entry points')
+ page.locator('.business-path').first.click();page.wait_for_url('**/products/index.html')
+ ok(page.locator('.product-catalog').is_visible(),'product entry opens the public catalogue')
+ page.go_back();page.locator('.business-path').nth(1).click();page.wait_for_url('**/services/index.html')
+ ok(page.locator('#transformation').is_visible(),'services entry opens implementation and other practices')
+ page.goto(BASE+'/');page.evaluate('document.fonts.ready')
+ ok(page.evaluate('document.fonts.check("16px \\"IBM Plex Sans\\"")'),'self-hosted enterprise body font loads')
+ for asset in page.locator('img').all():
+  asset.scroll_into_view_if_needed();asset.evaluate('(e)=>e.decode()')
+ ok(page.locator('img').evaluate_all('(imgs)=>imgs.every(i=>i.complete && i.naturalWidth>0)'),'all homepage images load including lazy assets')
+ ok(page.locator('.offerings-composition article h3').all_text_contents()==['Insurance Software','Insurance Software Implementation, Integration & Modernization','Insurance Technology Consulting','Fractional CIO / COO / CTO Leadership'],'four offerings in the requested order')
  ok(page.locator('#navigation').get_by_role('link',name='Products',exact=True).is_visible(),'Products is a primary navigation item')
  ok(page.locator('#navigation').get_by_role('link',name='FAQ',exact=True).is_visible(),'FAQ is a primary navigation item')
  ok(page.locator('.faq-preview details').count()==3,'homepage FAQ preview provides three concise answers')

@@ -10,7 +10,7 @@ For an HTTP preview, run `python -m http.server 4173` and open http://localhost:
 
 ## Website structure
 
-- **Home:** products-and-services positioning, flagship product, four ordered offerings, company experience and FAQ preview.
+- **Home:** a substantial engineering introduction, equal Products/Services entry points, four ordered offerings, flagship product, company experience and FAQ preview.
 - **Products:** a public product catalogue, currently featuring only EclipseSME™, its capabilities and implementation support.
 - **Our Offerings:** Insurance Software; Insurance Software Implementation & Modernization; Insurance Technology Consulting; Fractional CIO / COO / CTO Leadership. Audit readiness, security reviews, Totality Assessment and coaching are retained within their practices.
 - **Company:** product development, insurance experience and expertise across our own and third-party platforms.
@@ -28,7 +28,7 @@ EclipseSME is the only published entry. Unreleased ideas are not displayed; no a
 
 Templates: `scripts/build.py`. Content and metadata: `scripts/content.json`. Contact/privacy markup: `scripts/partials/`. Run `python scripts/build.py` after source edits and commit generated HTML. Root `index.html` remains the actual website.
 
-The visual system is in `assets/styles.css`; navigation, form handling and consent use classic local JavaScript. The actual logo is unchanged. Capability illustrations use HTML/CSS and original SVG icons, not product screenshots, stock photos or claims of operational results. Earlier photographic assets and `review/homepage-concepts/` are historical and unused by the current layouts.
+The visual system is in `assets/styles.css`; navigation, form handling and consent use classic local JavaScript. The original logo is unchanged. Manrope headings and self-hosted IBM Plex Sans body text support a corporate visual system. Commissioned engineering imagery and a clearly labelled product concept render replace the former miniature capability diagrams. They do not depict actual staff, offices or a live product interface. See `docs/enterprise-design-research.md` and `docs/assets.md`. Historical assets and `review/homepage-concepts/` remain unused by the active layouts.
 
 Formspree and optional analytics remain configurable in `assets/config.js`. Local submissions are explicitly simulated. Public hosting fails closed without valid production configuration and a dedicated EclipseIQ endpoint. No real inquiry or analytics traffic is sent by the test suite.
 
