@@ -27,13 +27,12 @@
   const form = document.getElementById("inquiry-form");
   if (!form) return;
   const config = window.ECLIPSEIQ_CONFIG?.form || {};
-  const local = location.protocol === "file:" || ["localhost", "127.0.0.1", "[::1]"].includes(location.hostname);
-  const production = config.mode === "production" && (!local || config.allowLocalProduction === true);
-  const development = local && (config.mode === "development" || (config.mode === "production" && !production));
+  const local = ["localhost", "127.0.0.1", "[::1]"].includes(location.hostname);
+  const production = config.mode === "production";
   const validEndpoint = typeof config.endpoint === "string" && /^https:\/\/formspree\.io\/f\/[a-zA-Z0-9]+$/.test(config.endpoint);
   const secureTransport = location.protocol === "https:" || (local && location.protocol === "http:");
   const publicKey = typeof config.recaptchaSiteKey === "string" ? config.recaptchaSiteKey.trim() : "";
-  const ready = development || (production && validEndpoint && secureTransport && (!config.requireRecaptcha || publicKey));
+  const ready = production && validEndpoint && secureTransport && (!config.requireRecaptcha || publicKey);
   const submit = form.querySelector('[type="submit"]');
   const status = document.getElementById("form-status");
   const note = document.getElementById("delivery-note");
@@ -44,11 +43,10 @@
     if (focus) status.focus();
   }
   submit.disabled = !ready;
-  note.textContent = development
-    ? "Local preview: submissions are simulated. No inquiry is sent."
-    : ready ? "Send your inquiry securely. Please do not include confidential or policyholder information."
+  note.textContent = ready ? "Send your inquiry securely. Please do not include confidential or policyholder information."
+    : location.protocol === "file:" ? "To send an inquiry, open this site through a localhost web server or HTTPS hosting."
     : "Online inquiries are currently unavailable. No inquiry will be sent until the contact service is configured.";
-  if (!ready) message("The contact service is not configured for live delivery. Please try again later.");
+  if (!ready) message(location.protocol === "file:" ? "Direct file previews cannot send inquiries. Please use a localhost web server." : "The contact service is not configured for live delivery. Please try again later.");
   const interest = new URLSearchParams(location.search).get("interest");
   const select = document.getElementById("interest");
   if (interest && [...select.options].some(o => o.value === interest)) select.value = interest;
@@ -92,28 +90,21 @@
       if (!token) { message("Please complete the spam verification before sending.", "error", true); return; }
       data.set("g-recaptcha-response", token);
     }
-    pending = true; submit.disabled = true; submit.textContent = development ? "Simulating…" : "Sending…";
+    pending = true; submit.disabled = true; submit.textContent = "Sending…";
     form.setAttribute("aria-busy", "true");
-    message(development ? "Simulating submission. No inquiry is being sent." : "Sending your inquiry…", "pending");
+    message("Sending your inquiry…", "pending");
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 20000);
     try {
-      if (development) {
-        await new Promise(resolve => setTimeout(resolve, 350));
-        if (config.developmentResult !== "success") throw new Error("simulation");
-        message("SIMULATED SUCCESS — Local test only. No inquiry was sent or received.", "simulation", true);
-      } else {
-        const response = await fetch(config.endpoint, {method:"POST", body:data, headers:{Accept:"application/json"}, credentials:"omit", referrerPolicy:"strict-origin-when-cross-origin", signal:controller.signal});
-        const result = await response.json();
-        if (!response.ok || result?.ok !== true) throw new Error("provider");
-        received = true;
-        form.reset();
-        message("Thank you. Your inquiry has been received. We’ll be in touch to discuss your priorities.", "success", true);
-      }
+      const response = await fetch(config.endpoint, {method:"POST", body:data, headers:{Accept:"application/json"}, credentials:"omit", referrerPolicy:"strict-origin-when-cross-origin", signal:controller.signal});
+      const result = await response.json();
+      if (!response.ok || result?.ok !== true) throw new Error("provider");
+      received = true;
+      form.reset();
+      message("Thank you. Your inquiry has been received. We’ll be in touch to discuss your priorities.", "success", true);
     } catch {
-      retryAfter = development ? 0 : Date.now() + 10000;
-      message(development ? "SIMULATED ERROR — Local test only. No inquiry was sent. Your entries are preserved."
-        : "We could not confirm receipt. Your entries are preserved. Please wait a few seconds and try again. If the connection timed out, your inquiry may already have arrived.", "error", true);
+      retryAfter = Date.now() + 10000;
+      message("We could not confirm receipt. Your entries are preserved. Please wait a few seconds and try again. If the connection timed out, your inquiry may already have arrived.", "error", true);
     } finally {
       clearTimeout(timer); pending = false; form.removeAttribute("aria-busy");
       submit.disabled = received; submit.textContent = received ? "Inquiry received" : "Send inquiry";

@@ -22,6 +22,6 @@ See [enterprise-design-research.md](enterprise-design-research.md) for the criti
 
 ## Foundations retained
 
-Form controls, validation, spam safeguards, contact preferences, local simulation, fail-closed production configuration, consent and analytics preparation remain. Topic values are stable. No public email address is displayed. Canonical/social metadata, Organization schema, sitemap, local-file paths and legacy policy aliases remain.
+Form controls, validation, spam safeguards, contact preferences, fail-closed production configuration and real localhost delivery, consent and analytics preparation remain. Topic values are stable. No public email address is displayed. Canonical/social metadata, Organization schema, sitemap, local-file paths and legacy policy aliases remain.
 
 Nothing is deployed. The live WordPress website and EclipseSME repository are untouched.

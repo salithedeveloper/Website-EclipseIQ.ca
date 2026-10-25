@@ -24,12 +24,12 @@ def fill(page):
  page.locator('#interest').select_option('consulting')
  page.locator('#message').fill('A test inquiry about system integration.')
 
-def configure(ctx, mode='production', endpoint='https://formspree.io/f/TESTONLY', result='success', ga='', captcha='', required=False, response='success', local_production=False, captcha_state='blocked', actual_config=False, statcounter=True):
+def configure(ctx, mode='production', endpoint='https://formspree.io/f/TESTONLY', ga='', captcha='', required=False, response='success', captcha_state='blocked', actual_config=False, statcounter=True):
  requests=[];errors=[]
- config={'form':{'mode':mode,'endpoint':endpoint,'developmentResult':result,'allowLocalProduction':local_production,'requireRecaptcha':required,'recaptchaSiteKey':captcha},'analytics':{'measurementId':ga,'statcounter':{'projectId':'13134286','securityCode':'a2936037','invisible':True} if statcounter and ga else {}}}
+ config={'form':{'mode':mode,'endpoint':endpoint,'requireRecaptcha':required,'recaptchaSiteKey':captcha},'analytics':{'measurementId':ga,'statcounter':{'projectId':'13134286','securityCode':'a2936037','invisible':True} if statcounter and ga else {}}}
  def handler(route):
   u=urlparse(route.request.url)
-  if u.hostname in ['eclipseiq.ca','127.0.0.1','localhost']:
+  if u.hostname in ['eclipseiq.ca','127.0.0.1','localhost','::1']:
    if u.path.endswith('/assets/config.js') or u.path=='/assets/config.js':
     route.fulfill(content_type='text/javascript',body=(ROOT/'assets/config.js').read_text() if actual_config else 'window.ECLIPSEIQ_CONFIG='+json.dumps(config));return
    path=(ROOT/unquote(u.path).lstrip('/')).resolve()
@@ -61,7 +61,7 @@ def configure(ctx, mode='production', endpoint='https://formspree.io/f/TESTONLY'
 with sync_playwright() as p:
  browser=p.chromium.launch(executable_path=CHROME,headless=True,args=['--no-sandbox'])
  # Real static server: links, rendering and runtime errors at all sizes.
- ctx=browser.new_context();page=ctx.new_page();errs=[];page.on('pageerror',lambda e:errs.append(str(e)))
+ ctx=browser.new_context();ctx.route('https://www.google.com/**',lambda route:route.abort());ctx.route('https://formspree.io/**',lambda route:route.abort());page=ctx.new_page();errs=[];page.on('pageerror',lambda e:errs.append(str(e)))
  paths=['/','/products/index.html','/services/index.html','/about/index.html','/faq/index.html','/contact/index.html','/privacy-policy/index.html','/404.html','/privacy/index.html','/cookie-policy-ca/index.html','/cookie-policy-ca-2/index.html']
  for width in [1440,1024,768,390,320]:
   page.set_viewport_size({'width':width,'height':900})
@@ -87,8 +87,8 @@ with sync_playwright() as p:
  page.goto(BASE+'/faq/index.html');page.locator('summary').first.click();ok(page.locator('details').first.get_attribute('open') is not None,'FAQ expands')
  page.goto(BASE+'/contact/index.html');fill(page)
  page.get_by_role('button',name='Send inquiry').click();page.wait_for_timeout(500)
- ok('SIMULATED SUCCESS' in page.locator('#form-status').inner_text(),'local success explicitly simulated')
- ok(page.locator('#name').input_value()=='Test Reviewer','required text trimmed; simulated entries preserved')
+ ok(page.locator('#form-status').get_attribute('data-state')=='error' and 'spam verification' in page.locator('#form-status').inner_text(),'local delivery requires a completed CAPTCHA')
+ ok(page.locator('#name').input_value()=='Test Reviewer','required text trimmed; blocked submission preserves entries')
  ctx.close()
  # Concise corporate content and native disclosure behaviour.
  ctx=browser.new_context();page=ctx.new_page();page.goto(BASE+'/')
@@ -145,8 +145,6 @@ with sync_playwright() as p:
   ok(not err,'no unexpected external traffic');ctx.close()
  ctx=browser.new_context();req,err=configure(ctx,captcha='TEST-PUBLIC-KEY',required=True);page=ctx.new_page();page.goto('https://eclipseiq.ca/contact/index.html');fill(page);page.locator('[type=submit]').click()
  ok(not any('formspree' in x.url for x in req),'failed CAPTCHA load prevents delivery');ctx.close()
- ctx=browser.new_context();req,err=configure(ctx,mode='development',result='error');page=ctx.new_page();page.goto(BASE+'/contact/index.html');fill(page);page.locator('[type=submit]').click();page.wait_for_timeout(500)
- ok('SIMULATED ERROR' in page.locator('#form-status').inner_text() and not req,'local simulated error sends no requests');ctx.close()
  # reCAPTCHA v2: explicit rendering, token validation and server confirmation.
  for width in [1440,320]:
   ctx=browser.new_context(viewport={'width':width,'height':900});req,err=configure(ctx,captcha='TEST-PUBLIC-KEY',required=True,captcha_state='checkbox');page=ctx.new_page();page.goto('https://eclipseiq.ca/contact/index.html')
@@ -185,11 +183,21 @@ with sync_playwright() as p:
  ok(len(posts)==1 and posts[0].url=='https://formspree.io/f/mkjjoneb' and 'TEST-CAPTCHA-TOKEN' in posts[0].post_data,'committed production configuration posts token and fields to the supplied endpoint (intercepted)')
  ok(page.locator('#form-status').get_attribute('data-state')=='success' and not err,'configured hosted flow succeeds only after mocked confirmation')
  ok(page.evaluate('window.ECLIPSEIQ_CONFIG.analytics.measurementId')=='G-2F668858GH' and not any('googletagmanager' in r.url or 'statcounter' in r.url for r in req),'configured production analytics stays inactive before consent');ctx.close()
- # The committed production configuration remains safe on an ordinary local preview.
- ctx=browser.new_context();req,err=configure(ctx,endpoint='https://formspree.io/f/mkjjoneb',captcha='6LcYYf8tAAAAAL1iEM5TbzaZSiq4VEGSsfyBUOna',required=True);page=ctx.new_page();page.goto(BASE+'/contact/index.html');fill(page);page.locator('[type=submit]').click();page.wait_for_timeout(500)
- ok('SIMULATED SUCCESS' in page.locator('#form-status').inner_text() and not req,'production config on localhost defaults to offline simulation without provider requests');ctx.close()
- ctx=browser.new_context();req,err=configure(ctx,captcha='TEST-PUBLIC-KEY',required=True,captcha_state='checkbox',local_production=True);page=ctx.new_page();page.goto(BASE+'/contact/index.html');page.wait_for_selector('#mock-recaptcha');fill(page);page.locator('#mock-recaptcha').check();page.locator('[type=submit]').click();page.wait_for_timeout(200)
- ok(page.locator('#form-status').get_attribute('data-state')=='success' and any('formspree' in r.url for r in req),'explicit local production opt-in exercises the real delivery code path with mocked providers');ctx.close()
+ # Localhost uses the same committed endpoint, CAPTCHA and confirmation path.
+ for origin in ['http://localhost','http://127.0.0.1','http://[::1]']:
+  ctx=browser.new_context();req,err=configure(ctx,actual_config=True,captcha_state='checkbox');page=ctx.new_page();page.goto(origin+'/contact/index.html');page.wait_for_selector('#mock-recaptcha');fill(page)
+  page.locator('[type=submit]').click();ok(not any('formspree' in r.url for r in req),'localhost unchecked CAPTCHA blocks delivery')
+  page.locator('#mock-recaptcha').check();page.locator('[type=submit]').click();page.wait_for_timeout(200)
+  posts=[r for r in req if 'formspree' in r.url]
+  ok(len(posts)==1 and posts[0].url=='https://formspree.io/f/mkjjoneb' and 'TEST-CAPTCHA-TOKEN' in posts[0].post_data,'loopback submits to production endpoint with CAPTCHA (intercepted)')
+  ok(page.locator('#form-status').get_attribute('data-state')=='success' and not err,'loopback success requires provider confirmation');ctx.close()
+ for response in ['ambiguous','malformed','rate','network','reject-ok']:
+  ctx=browser.new_context();req,err=configure(ctx,actual_config=True,captcha_state='checkbox',response=response);page=ctx.new_page();page.goto('http://localhost/contact/index.html');page.wait_for_selector('#mock-recaptcha');fill(page);page.locator('#mock-recaptcha').check();page.locator('[type=submit]').click();page.wait_for_timeout(200)
+  ok(page.locator('#form-status').get_attribute('data-state')=='error' and page.locator('#name').input_value()=='Test Reviewer','localhost '+response+' cannot display success and preserves entries');ctx.close()
+ ctx=browser.new_context();req,err=configure(ctx,actual_config=True,captcha_state='checkbox');page=ctx.new_page();held=[];page.route('https://formspree.io/**',lambda route:held.append(route));page.goto('http://localhost/contact/index.html');page.wait_for_selector('#mock-recaptcha');fill(page);page.locator('#mock-recaptcha').check();page.locator('[type=submit]').click();page.wait_for_timeout(100)
+ ok(len(held)==1 and page.locator('#form-status').get_attribute('data-state')=='pending','localhost cannot display success while delivery is pending')
+ held[0].fulfill(content_type='application/json',body='{"ok":true}');page.wait_for_timeout(100);ok(page.locator('#form-status').get_attribute('data-state')=='success','localhost success follows confirmed delivery');ctx.close()
+ ctx=browser.new_context();req,err=configure(ctx,actual_config=True);page=ctx.new_page();page.goto('http://eclipseiq.ca/contact/index.html');ok(page.locator('[type=submit]').is_disabled() and not req,'non-loopback HTTP cannot send inquiries');ctx.close()
  # Restored contact preferences: SMS and multiple selections.
  ctx=browser.new_context();req,err=configure(ctx);page=ctx.new_page();page.goto('https://eclipseiq.ca/contact/index.html');fill(page)
  page.get_by_label('SMS / text',exact=True).check();page.locator('[type=submit]').click()
