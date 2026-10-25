@@ -28,8 +28,8 @@
   if (!form) return;
   const config = window.ECLIPSEIQ_CONFIG?.form || {};
   const local = location.protocol === "file:" || ["localhost", "127.0.0.1", "[::1]"].includes(location.hostname);
-  const development = local && config.mode === "development";
-  const production = config.mode === "production";
+  const production = config.mode === "production" && (!local || config.allowLocalProduction === true);
+  const development = local && (config.mode === "development" || (config.mode === "production" && !production));
   const validEndpoint = typeof config.endpoint === "string" && /^https:\/\/formspree\.io\/f\/[a-zA-Z0-9]+$/.test(config.endpoint);
   const secureTransport = location.protocol === "https:" || (local && location.protocol === "http:");
   const publicKey = typeof config.recaptchaSiteKey === "string" ? config.recaptchaSiteKey.trim() : "";
@@ -54,7 +54,16 @@
   if (interest && [...select.options].some(o => o.value === interest)) select.value = interest;
   if (ready && production && publicKey) {
     window.eclipseIQCaptchaReady = () => {
-      captchaWidget = window.grecaptcha.render("form-captcha", {sitekey: publicKey});
+      try {
+        captchaWidget = window.grecaptcha.render("form-captcha", {
+          sitekey: publicKey,
+          size: document.getElementById("form-captcha").clientWidth < 304 ? "compact" : "normal",
+          "expired-callback": () => { if (!received && !pending) message("Spam verification expired. Please complete the checkbox again."); },
+          "error-callback": () => { if (!received && !pending) message("Spam verification could not complete. Please refresh and try again."); }
+        });
+      } catch {
+        message("Spam verification could not load. Please refresh and try again.");
+      }
     };
     const script = document.createElement("script");
     script.src = "https://www.google.com/recaptcha/api.js?onload=eclipseIQCaptchaReady&render=explicit";
@@ -78,7 +87,8 @@
     const data = new FormData(form);
     if (data.get("_gotcha")) { message("Unable to submit this inquiry. Please try again later.", "error", true); return; }
     if (production && publicKey) {
-      const token = captchaWidget !== undefined && window.grecaptcha?.getResponse(captchaWidget);
+      let token = "";
+      try { if (captchaWidget !== undefined) token = window.grecaptcha?.getResponse(captchaWidget) || ""; } catch { /* Block delivery if verification is unavailable. */ }
       if (!token) { message("Please complete the spam verification before sending.", "error", true); return; }
       data.set("g-recaptcha-response", token);
     }
@@ -107,7 +117,9 @@
     } finally {
       clearTimeout(timer); pending = false; form.removeAttribute("aria-busy");
       submit.disabled = received; submit.textContent = received ? "Inquiry received" : "Send inquiry";
-      if (production && captchaWidget !== undefined) window.grecaptcha.reset(captchaWidget);
+      if (production && !received && captchaWidget !== undefined) {
+        try { window.grecaptcha?.reset(captchaWidget); } catch { /* The next attempt still requires a valid token. */ }
+      }
     }
   });
 })();

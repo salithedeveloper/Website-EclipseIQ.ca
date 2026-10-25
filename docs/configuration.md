@@ -1,26 +1,64 @@
-# Forms, consent and analytics
+# Contact delivery, reCAPTCHA and analytics
 
-## Technical reference
-Reviewed read-only: `salithedeveloper/Website-EclipseSME.com`, branch `feat/eclipsesme-website-redesign`, commit `72986b916296e547df2ed1c92089dfa5c3b69616`, `assets/site.js` and `assets/consent.js`. EclipseIQ independently implements the same technical principles: explicit local simulation, production fail-closed, AJAX and provider-confirmed success, optional CAPTCHA, stored accept/reject preferences, delayed analytics loading and withdrawal. No stylesheet, visual template, form endpoint or analytics identifier reused. EclipseIQ has its own configuration and storage key.
+## Current production configuration
 
-## Form configuration
-Edit `assets/config.js`:
+`assets/config.js` contains only public settings:
 
-- Default `mode: "development"` allows simulation only on `file:`, localhost, 127.0.0.1 and [::1]. `developmentResult: "success"` or `"error"` selects test feedback. Simulations never reset the form or claim delivery.
-- Before launch set `mode: "production"` and the new EclipseIQ Formspree endpoint (`https://formspree.io/f/` plus your own form ID). Empty or invalid endpoints and unknown modes keep delivery disabled. The default development mode on a public hostname also keeps delivery disabled; it cannot simulate success there.
-- Production uses HTTPS; local HTTP is allowed only for controlled production-mode tests. Production mode on `file:` cannot send. No URL parameter can enable simulation or change the endpoint.
-- Success requires both a successful HTTP response and JSON `ok: true`. Network errors, malformed JSON, non-2xx, 429 and ambiguous responses preserve entries and never claim delivery. A 20-second timeout explains that a timed-out inquiry may have arrived. Duplicate sends are locked while pending and after confirmed success. Failed production attempts have a 10-second retry pause.
-- HTML constraints, required text trimming, conditional phone/SMS validation and at least one contact preference, length limits and a honeypot provide accessible client controls. Enforce abuse controls in Formspree: client JavaScript cannot prevent direct endpoint abuse. Configure domain restrictions for `eclipseiq.ca` and any intended www domain, spam protection, recipient routing and a verified sender/recipient workflow in the provider dashboard.
-- Do not put private recipient routing, provider API credentials or CAPTCHA secret keys in HTML/JS. The Formspree form ID and reCAPTCHA site key are public identifiers, not secrets.
+- `mode: "production"`.
+- Formspree endpoint: `https://formspree.io/f/mkjjoneb`.
+- `requireRecaptcha: true`.
+- Public reCAPTCHA v2 checkbox site key: `6LcYYf8tAAAAAL1iEM5TbzaZSiq4VEGSsfyBUOna`.
+- `allowLocalProduction: false`.
+- Analytics Measurement ID remains empty; analytics code and consent behaviour are unchanged.
 
-## Optional reCAPTCHA v2
-Set `recaptchaSiteKey` to the public v2 checkbox key and `requireRecaptcha: true` when the provider is configured to require it. Register permitted domains with Google and pair verification correctly in Formspree's supported setup. Missing required keys disable delivery; when a key is present, an unloaded, failed, expired or incomplete challenge blocks sending. CAPTCHA is never loaded in simulation mode. It is separate from optional analytics consent because it protects the requested form operation. Confirm the privacy notice and CSP allowlist before enabling. No key has been invented.
+The reCAPTCHA secret remains exclusively in Formspree. Never add a secret key, private recipient routing or provider API credential to this repository, browser code, URLs or test fixtures.
 
-## Consent and GA4
-- `eclipseiq.analytics-consent.v1` stores `accepted` or `rejected` with a timestamp for 180 days. Invalid, expired or future-dated entries do not grant consent. With blocked storage, choice is held for the page session only.
-- The compact banner names no analytics vendor. Equal actions accept or reject; the footer reopens it, focuses the existing choice (reject by default), and returns focus after a decision. Escape closes it only after a choice exists. It is a non-modal region, so it does not trap keyboard focus.
-- Analytics loads only after explicit acceptance, on hosted HTTPS, and only with a nonempty syntactically valid EclipseIQ `analytics.measurementId`. Local and file previews never collect. No noscript pixels, preconnects, third-party fonts or analytics tags appear in HTML.
-- GA4 setup disables advertising signals, automatic initial page views and ad storage. A single explicit page view uses canonical URL/title and an empty referrer; it never deliberately reads input content, search strings or fragments. In GA4's data stream dashboard disable enhanced measurement (especially form interactions, outbound clicks and site search) to avoid remote settings collecting additional events. Code cannot control every future remote GA configuration.
-- Rejecting disables GA immediately, clears the pending data layer, removes script elements, deletes accessible `_ga` cookies for site paths/domains where possible, then reloads if the provider was started. Reload unloads executing code. Third-party or HttpOnly cookies and previously collected data cannot be removed by this code.
-- Cross-tab changes and clearing storage stop collection. Open tabs also check saved consent expiry every minute.
-- The GA4 ID remains empty. No Statcounter integration or identifiers are included. Live GA4 behavior and actual Formspree delivery require post-configuration verification; browser tests mock both providers and send no real inquiries.
+On HTTPS hosting, the contact form explicitly renders Google's v2 checkbox in the existing CAPTCHA container. Narrow forms use Google's supported compact widget. Missing, expired or unavailable verification blocks delivery. Expiry and load errors use the existing accessible status area. The token is sent under the required `g-recaptcha-response` field.
+
+Inquiries are submitted asynchronously as `FormData` with `Accept: application/json`. Success requires **both** a successful HTTP status and JSON `ok: true`. The form never treats a click, a completed checkbox, a pending request, ambiguous JSON or a network timeout as confirmed receipt. Failures preserve entries; pending and confirmed submissions prevent duplicate sends. The existing 20-second timeout, retry pause, length/required-field validation, honeypot and email/phone/SMS preferences are preserved.
+
+## Safe everyday local review
+
+Open root `index.html` directly or run:
+
+```sh
+python -m http.server 4173
+```
+
+Then visit http://localhost:4173/contact/index.html.
+
+Even though the committed mode is production, `file:`, localhost, 127.0.0.1 and [::1] default to **local simulation**. The existing notice and result explicitly say that no inquiry was sent. Google and Formspree are not contacted. `developmentResult` can select simulated success/error. No URL parameter can enable real delivery.
+
+Public-host development mode still fails closed. Production on plain remote HTTP is disabled. A file-origin page cannot send a production inquiry, even if local production is explicitly enabled.
+
+## Deliberate real submission test locally
+
+This is a manual end-to-end test that sends one real inquiry. Automated browser checks use intercepted providers and never send real inquiries.
+
+1. In the Google reCAPTCHA admin console, ensure the supplied **checkbox** key permits the hostname you will use, such as `localhost`. For production, ensure `eclipseiq.ca` and any intended `www` hostname are permitted. Keep server-side validation enabled. The existing secret stays in Formspree.
+2. In Formspree, confirm the dedicated form, custom reCAPTCHA configuration, recipient routing and any domain restrictions permit the intended test. If localhost is restricted, use a permitted staging hostname or temporarily allow the local test through the provider settings; do not disable CAPTCHA validation. Restore temporary provider allowances after testing.
+3. From the repository root, explicitly start the opt-in loopback preview:
+
+   ```sh
+   python scripts/preview_form_delivery.py --real-delivery --port 4174
+   ```
+
+   Open http://localhost:4174/contact/index.html (or 127.0.0.1 if that hostname is allowed for the key). The helper serves an **in-memory** configuration with local production enabled, binds only to loopback, and does not edit repository files. Starting an ordinary static server does not opt in.
+4. Confirm the page shows the normal secure-inquiry notice and the real Google checkbox, rather than the local-simulation notice. Fill every required field with clearly labelled test information and an email inbox you control. For Phone/SMS, include a test contact number you control. Do not include real policyholder or confidential data.
+5. Before checking CAPTCHA, submit once: verification should block sending. Complete the actual Google challenge, then submit once. In browser developer tools, confirm one POST to the configured endpoint, including `g-recaptcha-response`. Do not copy or publish the token.
+6. Confirm success appears only after Formspree responds successfully. Check the Formspree submissions dashboard and intended recipient inbox for the labelled test. HTTP acceptance confirms Formspree receipt; checking the inbox verifies downstream mail delivery.
+7. Stop the preview with Ctrl+C. Returning to the ordinary local server restores simulation automatically. No tracked configuration needs reverting. Do not commit `allowLocalProduction: true`.
+
+If Google displays “invalid domain for site key” or cannot load, no real inquiry can be sent. Correct the provider-side hostname/setup or network issue and retry; the client cannot verify provider dashboard configuration by itself.
+
+## Automated checks
+
+Start the ordinary local server and run `python scripts/check_browser.py`. It tests validation, preferences, spam guards, CAPTCHA rendering/token handling/expiry/errors, normal/compact widget sizing, pending requests, duplicate prevention, token POST payloads, provider-confirmed success and failure, safe local defaults and deliberate local opt-in using mocked providers. All production-like Google/Formspree traffic is intercepted.
+
+The live key's domain permissions, private Formspree setup and actual mailbox delivery require the manual test above; they are not established by mocked tests.
+
+## Consent and analytics
+
+The existing consent controls and analytics preparation remain unchanged. The GA4 ID stays empty. Local/file previews never collect analytics; public analytics requires a configured ID and explicit consent. Rejection, withdrawal, expiry and cross-tab synchronization retain their existing behaviour. CAPTCHA protects the requested form operation and is not optional website-usage analytics.
+
+Implementation references: [Formspree custom reCAPTCHA v2](https://help.formspree.io/articles/form-and-project-settings/adding-a-custom-recaptcha-v2-key/) and [Google's explicit checkbox rendering API](https://developers.google.com/recaptcha/docs/display).
