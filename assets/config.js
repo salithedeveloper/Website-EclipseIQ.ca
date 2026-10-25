@@ -9,5 +9,8 @@ window.ECLIPSEIQ_CONFIG = Object.freeze({
     requireRecaptcha: true,
     recaptchaSiteKey: "6LcYYf8tAAAAAL1iEM5TbzaZSiq4VEGSsfyBUOna" // PUBLIC v2 checkbox key only.
   }),
-  analytics: Object.freeze({measurementId: ""}) // EclipseIQ's own GA4 ID later.
+  analytics: Object.freeze({
+    measurementId: "G-2F668858GH",
+    statcounter: Object.freeze({projectId: "13134286", securityCode: "a2936037", invisible: true})
+  })
 });

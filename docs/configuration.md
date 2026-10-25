@@ -9,7 +9,8 @@
 - `requireRecaptcha: true`.
 - Public reCAPTCHA v2 checkbox site key: `6LcYYf8tAAAAAL1iEM5TbzaZSiq4VEGSsfyBUOna`.
 - `allowLocalProduction: false`.
-- Analytics Measurement ID remains empty; analytics code and consent behaviour are unchanged.
+- GA4 Measurement ID: `G-2F668858GH`.
+- Invisible Statcounter project: `13134286`; public security code: `a2936037`.
 
 The reCAPTCHA secret remains exclusively in Formspree. Never add a secret key, private recipient routing or provider API credential to this repository, browser code, URLs or test fixtures.
 
@@ -59,6 +60,18 @@ The live key's domain permissions, private Formspree setup and actual mailbox de
 
 ## Consent and analytics
 
-The existing consent controls and analytics preparation remain unchanged. The GA4 ID stays empty. Local/file previews never collect analytics; public analytics requires a configured ID and explicit consent. Rejection, withdrawal, expiry and cross-tab synchronization retain their existing behaviour. CAPTCHA protects the requested form operation and is not optional website-usage analytics.
+Both services are configured in `assets/config.js` and run only on public HTTPS pages after explicit acceptance, or a valid previously accepted preference (180 days). The consent storage version is now `eclipseiq.analytics-consent.v2`: preferences from the earlier GA-only preparation prompt for a new choice before enabling either provider. No provider script, analytics request, preconnect or noscript tracking image is present before consent. File and loopback previews never collect analytics, even after acceptance or when the form delivery helper is used. CAPTCHA protects the requested form operation and is separate from optional usage analytics.
+
+GA4 loads its tag once per document, configures `send_page_view: false`, then queues exactly one explicit `page_view`. Its location is the static canonical URL, its title is the fixed document title, and its referrer is empty. Advertising signals and personalization are disabled. There are no custom form, conversion, user-ID or contact-detail events. **In the GA4 web stream dashboard, keep Enhanced Measurement disabled** (including history page views, form interactions, site search and outbound clicks), and do not add automatic user-provided data collection or additional tags. Those remotely managed settings cannot be verified from this repository. Review property retention and access before launch.
+
+Statcounter uses its invisible counter image transport (`https://c.statcounter.com/t.php`) with the supplied project/security code and `invisible=1`. Only the canonical page URL (`u`), fixed title (`t`), blank referrer (`camefrom`) counter configuration and a cache-busting timestamp are supplied. `referrerPolicy="no-referrer"` also prevents the browser from attaching the current address. We deliberately omit `counter.js`, replay, click tracking, visitor labels and the noscript pixel. This limits Statcounter to page-view statistics; advanced visitor/session reports may be limited. The image request still exposes normal network metadata to the provider. This implementation creates no Statcounter visitor cookie.
+
+Reopening preferences and accepting again does not duplicate initialization. Withdrawal removes analytics elements and accessible GA/legacy Statcounter cookies, disables GA, and reloads to unload executing provider code. Saved rejection, expiry, invalid preferences and cross-tab withdrawal fail closed. Third-party/HttpOnly cookies and already received data cannot be removed by website JavaScript.
+
+### Analytics verification
+
+Run `python scripts/check_browser.py` with the ordinary local server running. Provider requests are intercepted: no test visits or real inquiries reach Google, Statcounter or Formspree. The suite covers fresh visitors, persistent rejection, accepted returning visitors, repeat acceptance, withdrawal, expired/invalid choices, cross-tab changes, blocked storage, disabled JavaScript, sanitized payloads and untouched local simulation.
+
+On a separately authorized HTTPS staging/production host, use Developer Tools Network with Preserve log enabled. Clear site data and verify no Google Analytics/Tag Manager/Statcounter request before choosing; Reject and reload should remain silent. Accept should load one GA tag and one invisible Statcounter request with the canonical URL and no query values or referrer. Check GA4 network `page_view` count/Realtime and Statcounter reports; reload should register one new page view per provider without reopening the banner. Reaccepting on the same page should register none. Withdraw through Cookie preferences, check accessible cookies are removed, and reload/navigate: no new tracking. Test a URL containing a non-personal test query and confirm its value never appears in provider requests. No live provider reporting or dashboard configuration is established by intercepted tests.
 
 Implementation references: [Formspree custom reCAPTCHA v2](https://help.formspree.io/articles/form-and-project-settings/adding-a-custom-recaptcha-v2-key/) and [Google's explicit checkbox rendering API](https://developers.google.com/recaptcha/docs/display).

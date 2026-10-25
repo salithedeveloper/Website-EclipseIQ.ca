@@ -3,10 +3,13 @@
   const banner = document.getElementById("cookie-banner");
   const preferences = document.querySelector(".cookie-preferences");
   if (!banner || !preferences) return;
-  const key = "eclipseiq.analytics-consent.v1";
+  const key = "eclipseiq.analytics-consent.v2";
   const maxAge = 180 * 24 * 60 * 60 * 1000;
-  const id = window.ECLIPSEIQ_CONFIG?.analytics?.measurementId || "";
-  // Preview and file origins never collect analytics, even if configured later.
+  const analytics = window.ECLIPSEIQ_CONFIG?.analytics || {};
+  const id = analytics.measurementId || "";
+  const counter = analytics.statcounter || {};
+  const validCounter = /^\d+$/.test(counter.projectId || "") && /^[a-f0-9]{8}$/i.test(counter.securityCode || "") && counter.invisible === true;
+  // Preview and file origins never collect analytics, including when production IDs are configured.
   const hosted = location.protocol === "https:" && !["localhost", "127.0.0.1", "[::1]"].includes(location.hostname);
   const validId = /^G-[A-Z0-9]+$/.test(id);
   let choice = null, started = false, returnFocus;
@@ -14,7 +17,7 @@
   try { const saved = JSON.parse(localStorage.getItem(key)); if (valid(saved)) choice = saved.choice; } catch { /* Fail closed if storage is unavailable. */ }
   function clearCookies() {
     try {
-      const names = document.cookie.split(";").map(c => c.trim().split("=")[0]).filter(n => /^_ga(?:_|$)/.test(n));
+      const names = document.cookie.split(";").map(c => c.trim().split("=")[0]).filter(n => /^(?:_ga(?:_|$)|sc_is_visitor_unique$|is_unique$|is_visitor_unique$)/.test(n));
       const domains = ["", location.hostname, "." + location.hostname];
       if (location.hostname.endsWith(".eclipseiq.ca")) domains.push("eclipseiq.ca", ".eclipseiq.ca");
       const parts = location.pathname.split("/");
@@ -24,24 +27,46 @@
     } catch { /* Some origins restrict cookies. Third-party and HttpOnly cookies are inaccessible. */ }
   }
   function start() {
-    if (choice !== "accepted" || started || !hosted || !validId) return;
-    const canonical = document.querySelector('link[rel="canonical"]')?.href;
-    if (!canonical) return;
+    if (choice !== "accepted" || started || !hosted || (!validId && !validCounter)) return;
+    // Only a trusted, static canonical URL may enter analytics. Never use location.href,
+    // document.referrer, form values, custom user IDs or campaign query parameters.
+    let canonical;
+    try {
+      canonical = new URL(document.querySelector('link[rel="canonical"]')?.href);
+      if (canonical.origin !== "https://eclipseiq.ca" || canonical.search || canonical.hash) return;
+    } catch { return; }
+    canonical = canonical.href;
     started = true;
-    window["ga-disable-" + id] = false;
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () { window.dataLayer.push(arguments); };
-    window.gtag("consent", "default", {analytics_storage:"granted",ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied"});
-    window.gtag("js", new Date());
-    const page = {page_location:canonical,page_title:document.title,page_referrer:""};
-    window.gtag("set", page);
-    window.gtag("config", id, {...page,send_page_view:false,allow_google_signals:false,allow_ad_personalization_signals:false});
-    window.gtag("event", "page_view", {...page,send_to:id});
-    const script = document.createElement("script");
-    script.dataset.optionalAnalytics = "ga4";
-    script.src = "https://www.googletagmanager.com/gtag/js?id=" + id;
-    script.async = true; script.referrerPolicy = "no-referrer";
-    document.head.append(script);
+    if (validId) {
+      window["ga-disable-" + id] = false;
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag("consent", "default", {analytics_storage:"granted",ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied"});
+      window.gtag("js", new Date());
+      const page = {page_location:canonical,page_title:document.title,page_referrer:""};
+      window.gtag("set", page);
+      window.gtag("config", id, {...page,send_page_view:false,allow_google_signals:false,allow_ad_personalization_signals:false});
+      window.gtag("event", "page_view", {...page,send_to:id});
+      const script = document.createElement("script");
+      script.dataset.optionalAnalytics = "ga4";
+      script.src = "https://www.googletagmanager.com/gtag/js?id=" + id;
+      script.async = true; script.referrerPolicy = "no-referrer";
+      document.head.append(script);
+    }
+    if (validCounter) {
+      // Page-view-only invisible image transport. Do not load counter.js: its
+      // automatic URL/referrer, click and replay collection exceeds our scope.
+      // These are the counter protocol's page URL/title fields, not visitor input.
+      const url = new URL("https://c.statcounter.com/t.php");
+      url.search = new URLSearchParams({sc_project:counter.projectId,security:counter.securityCode,
+        invisible:"1",java:"1",u:canonical,t:document.title,camefrom:"",r:String(Date.now())}).toString();
+      const pixel = document.createElement("img");
+      pixel.dataset.optionalAnalytics = "statcounter";
+      pixel.alt = ""; pixel.width = 1; pixel.height = 1; pixel.hidden = true;
+      pixel.referrerPolicy = "no-referrer";
+      pixel.src = url.href;
+      document.body.append(pixel);
+    }
   }
   function stop() {
     if (validId) window["ga-disable-" + id] = true;
@@ -80,7 +105,7 @@
     if (!choice) return;
     try {
       const saved = JSON.parse(localStorage.getItem(key));
-      if (saved && !valid(saved)) { choice = null; stop(); banner.hidden = false; }
+      if (!valid(saved)) { choice = null; stop(); banner.hidden = false; }
     } catch { /* Storage unavailable: keep current-page choice only. */ }
   }, 60000);
   if (choice === "accepted") start();
